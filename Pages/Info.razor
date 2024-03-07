@@ -1,0 +1,155 @@
+﻿@page "/info"
+@inject NavigationManager Nav
+@inject ILocalStorageService localStorage
+@inject ISnackbar snackBar
+@inject IDialogService Dialog
+@using System.Net.Http.Headers
+
+<PageTitle>Prenatal</PageTitle>
+
+<MudToolBar>
+    <MudText Typo="Typo.h6">Prenatal Information</MudText>
+</MudToolBar>
+
+
+<MudToolBar>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Medium" @onclick="(e => RefreshInfo())">Refresh</MudButton>&nbsp;
+    <MudButton Color="Color.Tertiary" Variant="Variant.Filled" Size="Size.Medium" @onclick="(e => AddInfo())">Add</MudButton>
+</MudToolBar>
+
+<MudToolBar>
+    <MudSpacer /> <MudSpacer /> <MudSpacer />
+    <MudTextField @bind-Value="txtinfo" Clearable TextChanged="SearchInfo" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
+     </MudTextField>
+ </MudToolBar>
+ @if (infoList != null && infoList.Any())
+{
+    <MudTable Class="ma-5" Dense="true" Hover="true" Items="@infoList" HorizontalScrollbar="true" FixedHeader="@fixed_header" FixedFooter="@fixed_footer" Height="@(fixed_header || fixed_footer ? "500px" : "")">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Age</MudTh>
+            <MudTh>Address</MudTh>
+            <MudTh>Contact</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.fullname</MudTd>
+                <MudTd DataLabel="Age">@context.age</MudTd>
+                <MudTd DataLabel="Address">@context.address</MudTd>
+                <MudTd DataLabel="Contact">@context.contact</MudTd>
+                <MudTd>
+                    <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
+                        <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => EditInfo(context.infoID))" Size="Size.Small" />
+                    </MudTooltip>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+}
+else
+{
+    <MudText Align="Align.Left">No records found</MudText>
+}
+
+
+    @code {
+    private string search { get; set; } = "";
+    private string txtinfo { get; set; } = "";
+    private string txtsched { get; set; } = "";
+    info[]? infoList;
+    bool fixed_header = true;
+    bool fixed_footer = false;
+    DateTime? date = DateTime.Now;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await loadInfo();
+        }
+    }
+
+    private async Task loadInfo()
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"{Nav.BaseUri}");
+                client.DefaultRequestHeaders.Authorization = new
+                AuthenticationHeaderValue("Bearer", await
+                localStorage.GetItemAsStringAsync("token"));
+                HttpResponseMessage response = await client.GetAsync($"api/info/info");
+                if (response.IsSuccessStatusCode)
+                {
+                    string contentrespose = await response.Content.ReadAsStringAsync();
+                    infoList = JsonConvert.DeserializeObject<info[]>(contentrespose);
+                    StateHasChanged();
+                }
+                else
+                {
+                    snackBar.Add($"Warning: {response.StatusCode}", Severity.Warning);
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //
+        }
+    }
+  
+    public async Task SearchInfo()
+    {
+        if (string.IsNullOrWhiteSpace(txtinfo))
+        {
+            StateHasChanged();
+            return;
+        }
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+            await localStorage.GetItemAsStringAsync("token"));
+            HttpResponseMessage response = await client.GetAsync($"api/info/searchinfo?search={txtinfo}");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentrespose = await response.Content.ReadAsStringAsync();
+                infoList = JsonConvert.DeserializeObject<info[]>(contentrespose);
+                StateHasChanged();
+            }
+            else
+            {
+                snackBar.Add($"Warning: {response.StatusCode}", Severity.Warning);
+            }
+        }
+    }
+    public async Task SearchSchedule()
+    {
+
+    }
+
+    private async Task AddInfo()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("xinfo", new info());
+        var dialog = Dialog.Show<AddInfo>("Add Prenatal Information", parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await loadInfo();
+        }
+    }
+
+    private async Task EditInfo(string id)
+    {
+        var parameters = new DialogParameters();
+        var update = infoList.FirstOrDefault(_ => _.infoID == id);
+        parameters.Add("xinfo", update);
+        var dialog = await Dialog.Show<UpdateInfo>("Update Prenatal Information", parameters).Result;
+    }
+
+    private async Task RefreshInfo()
+    {
+        await loadInfo();
+    }
+}

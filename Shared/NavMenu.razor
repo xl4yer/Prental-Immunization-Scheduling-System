@@ -1,0 +1,45 @@
+﻿<MudDrawer @bind-Open="SideBarOpen" Elevation="1">
+	<MudDrawerHeader>
+		<MudAvatar Color="Color.Inherit" Size="Size.Large" Image="logo.png" />
+		<MudText Typo="Typo.h5" Color="Color.Primary" Style="margin-top:10px; margin-left:15px;">Bhcirs</MudText>
+	</MudDrawerHeader>
+	<MudNavMenu>
+		<MudNavLink Href="/dashboard" Icon="@Icons.Filled.Dashboard">DAshboard</MudNavLink>
+		<MudNavGroup Title="Prenatal" Icon="@Icons.Filled.PregnantWoman" Expanded="true">
+			<MudNavLink Href="/info" Icon="@Icons.Filled.Info">Information</MudNavLink>
+			<MudNavLink Href="/addpresched" Icon="@Icons.Filled.CalendarToday" IconColor="Color.Primary">Add Schedule</MudNavLink>
+			<MudNavGroup Title="Vaccine" Icon="@Icons.Filled.Vaccines" Expanded="true">
+				<MudNavLink Href="/teta1" Icon="@Icons.Filled.Vaccines">Tetanus-1st</MudNavLink>
+				<MudNavLink Href="/teta2" Icon="@Icons.Filled.Vaccines">Tetanus-2nd</MudNavLink>
+			</MudNavGroup>
+		</MudNavGroup>
+		<MudNavGroup Title="Immunization" Icon="@Icons.Filled.ChildCare" Expanded="true">
+			<MudNavLink Href="/child" Icon="@Icons.Filled.Info">Information</MudNavLink>
+			<MudNavLink Href="/addimmsched" Icon="@Icons.Filled.CalendarToday" IconColor="Color.Primary">Add Schedule</MudNavLink>
+			<MudNavGroup Title="Vaccine" Icon="@Icons.Filled.Vaccines" Expanded="true">
+				<MudNavLink Href="/bcg" Icon="@Icons.Filled.Vaccines">BCG</MudNavLink>
+				<MudNavLink Href="/Penta1" Icon="@Icons.Filled.Vaccines">Penta-1st</MudNavLink>
+				<MudNavLink Href="/Penta2" Icon="@Icons.Filled.Vaccines">Penta-2nd</MudNavLink>
+				<MudNavLink Href="/Penta2" Icon="@Icons.Filled.Vaccines">Penta-3rd</MudNavLink>
+				<MudNavLink Href="/bopv1" Icon="@Icons.Filled.Vaccines">BOPV-1st</MudNavLink>
+				<MudNavLink Href="/bopv2" Icon="@Icons.Filled.Vaccines">BOPV-2nd</MudNavLink>
+				<MudNavLink Href="/bopv2" Icon="@Icons.Filled.Vaccines">BOPV-3rd</MudNavLink>
+				<MudNavLink Href="/ipv1" Icon="@Icons.Filled.Vaccines">IPV-1st</MudNavLink>
+				<MudNavLink Href="/ipv2" Icon="@Icons.Filled.Vaccines">IPV-2nd</MudNavLink>
+				<MudNavLink Href="/mcv1" Icon="@Icons.Filled.Vaccines">MCV-1st</MudNavLink>
+				<MudNavLink Href="/mcv2" Icon="@Icons.Filled.Vaccines">MCV-2nd</MudNavLink>
+				<MudNavLink Href="/pcv131" Icon="@Icons.Filled.Vaccines">PCV13-1st</MudNavLink>
+				<MudNavLink Href="/pcv132" Icon="@Icons.Filled.Vaccines">PCV13-2nd</MudNavLink>
+				<MudNavLink Href="/pcv133" Icon="@Icons.Filled.Vaccines">PSV13-3rd</MudNavLink>
+			</MudNavGroup>
+		</MudNavGroup>
+		<MudNavLink Href="/settings" Icon="@Icons.Filled.Settings">Settings</MudNavLink>
+	</MudNavMenu>
+</MudDrawer>
+
+
+
+@code {
+	[Parameter]
+	public bool SideBarOpen { get; set; }
+}
