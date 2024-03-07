@@ -143,6 +143,6 @@ else
         var update = immunizationList.FirstOrDefault(_ => _.immunizationID == id);
         parameters.Add("ximm", update);
         parameters.Add("xchild", _child);
-        var dialog = await Dialog.Show<UpdatePrenatal>("Update BCG", parameters).Result;
+        var dialog = await Dialog.Show<UpdateImmunization>("Update BCG", parameters).Result;
     }
 }

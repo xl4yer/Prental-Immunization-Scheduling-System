@@ -1,4 +1,4 @@
-﻿@page "/penta1"
+﻿@page "/bopv2"
 @inject NavigationManager Nav
 @inject ILocalStorageService localStorage
 @inject ISnackbar snackBar
@@ -24,56 +24,56 @@
 </MudToolBar>
 @if (immunizationList != null && immunizationList.Any())
 {
-<MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
-          Items="@immunizationList"
-          GroupBy="@_groupDefinition"
-          GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
-          GroupFooterClass="mb-4"
-          Dense="true"
-          @ref="_tableRef">
-    <ColGroup>
-        <col style="width: 60px;" />
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
-    </ColGroup>
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Status</MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <GroupHeaderTemplate>
-        <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.GroupName}: {context.Key}") </MudTh>
-    </GroupHeaderTemplate>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.fullname</MudTd>
-        <MudTd DataLabel="Status">
-            @if (context.status == "Scheduled")
-            {
-                <MudChip Color="Color.Primary" Size="Size.Small">@context.status</MudChip>
-            }
-            else
-            {
-                <MudChip Color="Color.Success" Size="Size.Small">@context.status</MudChip>
-            }
-        </MudTd>
-        <MudTd>
-            <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
-                <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.immunizationID))" Size="Size.Small" />
-            </MudTooltip>
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
+              Items="@immunizationList"
+              GroupBy="@_groupDefinition"
+              GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+              GroupFooterClass="mb-4"
+              Dense="true"
+              @ref="_tableRef">
+        <ColGroup>
+            <col style="width: 60px;" />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <GroupHeaderTemplate>
+            <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.GroupName}: {context.Key}") </MudTh>
+        </GroupHeaderTemplate>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.fullname</MudTd>
+            <MudTd DataLabel="Status">
+                @if (context.status == "Scheduled")
+                {
+                    <MudChip Color="Color.Primary" Size="Size.Small">@context.status</MudChip>
+                }
+                else
+                {
+                    <MudChip Color="Color.Success" Size="Size.Small">@context.status</MudChip>
+                }
+            </MudTd>
+            <MudTd>
+                <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
+                    <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.immunizationID))" Size="Size.Small" />
+                </MudTooltip>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-3" OnClick="@((args) => _tableRef?.ExpandAllGroups())">Expand all groups</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-3" OnClick="@((args) => _tableRef?.ExpandAllGroups())">Expand all groups</MudButton>
     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small" Class="mt-3 ml-3" OnClick="@((args) => _tableRef?.CollapseAllGroups())">Collapse all groups</MudButton>
 
 }
 else
 {
-  <p1>No Records Found</p1>
+    <p1>No Records Found</p1>
 }
 
 @code {
@@ -110,7 +110,7 @@ else
                 client.DefaultRequestHeaders.Authorization = new
                 AuthenticationHeaderValue("Bearer", await
                 localStorage.GetItemAsStringAsync("token"));
-                HttpResponseMessage response = await client.GetAsync($"api/Immunization/Penta1");
+                HttpResponseMessage response = await client.GetAsync($"api/Immunization/BOPV2");
                 if (response.IsSuccessStatusCode)
                 {
                     string contentrespose = await response.Content.ReadAsStringAsync();
