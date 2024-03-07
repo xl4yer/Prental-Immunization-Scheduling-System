@@ -1,4 +1,4 @@
-﻿@page "/bopv3"
+﻿@page "/pcv132"
 @inject NavigationManager Nav
 @inject ILocalStorageService localStorage
 @inject ISnackbar snackBar
@@ -6,7 +6,7 @@
 @using System.Net.Http.Headers
 @inject HttpClient httpClient
 
-<PageTitle>Penta 1st Dose</PageTitle>
+<PageTitle>PCV13 2nd Dose</PageTitle>
 
 <style>
     .mud-table-cell-custom-group {
@@ -20,7 +20,7 @@
 </style>
 
 <MudToolBar>
-    <h5>BOPV 3rd Dose</h5>
+    <h5>PCV13 2nd Dose</h5>
 </MudToolBar>
 @if (immunizationList != null && immunizationList.Any())
 {
@@ -110,7 +110,7 @@ else
                 client.DefaultRequestHeaders.Authorization = new
                 AuthenticationHeaderValue("Bearer", await
                 localStorage.GetItemAsStringAsync("token"));
-                HttpResponseMessage response = await client.GetAsync($"api/Immunization/BOPV3");
+                HttpResponseMessage response = await client.GetAsync($"api/Immunization/PCV132");
                 if (response.IsSuccessStatusCode)
                 {
                     string contentrespose = await response.Content.ReadAsStringAsync();
