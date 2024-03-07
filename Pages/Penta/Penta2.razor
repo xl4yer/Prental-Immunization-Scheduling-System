@@ -1,10 +1,12 @@
-﻿@page "/teta2"
+﻿@page "/penta2"
 @inject NavigationManager Nav
 @inject ILocalStorageService localStorage
 @inject ISnackbar snackBar
 @inject IDialogService Dialog
 @using System.Net.Http.Headers
 @inject HttpClient httpClient
+
+<PageTitle>Penta 2nd Dose</PageTitle>
 
 <style>
     .mud-table-cell-custom-group {
@@ -18,11 +20,12 @@
 </style>
 
 <MudToolBar>
-    <h5>BCG Patient Record</h5>
+    <h5>Penta 2nd Dose</h5>
 </MudToolBar>
-
+@if (immunizationList != null && immunizationList.Any())
+{
 <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
-          Items="@prenatalList"
+          Items="@immunizationList"
           GroupBy="@_groupDefinition"
           GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
           GroupFooterClass="mb-4"
@@ -58,20 +61,24 @@
         </MudTd>
         <MudTd>
             <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
-                <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.prenatalID))" Size="Size.Small" />
+                <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.immunizationID))" Size="Size.Small" />
             </MudTooltip>
         </MudTd>
     </RowTemplate>
 </MudTable>
 
 <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-3" OnClick="@((args) => _tableRef?.ExpandAllGroups())">Expand all groups</MudButton>
-<MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small" Class="mt-3 ml-3" OnClick="@((args) => _tableRef?.CollapseAllGroups())">Collapse all groups</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small" Class="mt-3 ml-3" OnClick="@((args) => _tableRef?.CollapseAllGroups())">Collapse all groups</MudButton>
+}
+else
+{
+   <p1>No Records Found</p1>
+}
 
 @code {
-    private MudTable<prenatal> _tableRef;
-    prenatal[]? prenatalList;
-    [Parameter] public info _child { get; set; } = new info();
-    private TableGroupDefinition<prenatal> _groupDefinition = new()
+    private MudTable<immunization> _tableRef;
+
+    private TableGroupDefinition<immunization> _groupDefinition = new()
         {
             GroupName = "Date",
             Indentation = false,
@@ -84,15 +91,15 @@
     {
         if (firstRender)
         {
-            await loadTeta1();
+            await loadBCG();
         }
     }
     private async Task Refresh()
     {
-        await loadTeta1();
+        await loadBCG();
     }
 
-    private async Task loadTeta1()
+    private async Task loadBCG()
     {
         try
         {
@@ -102,11 +109,11 @@
                 client.DefaultRequestHeaders.Authorization = new
                 AuthenticationHeaderValue("Bearer", await
                 localStorage.GetItemAsStringAsync("token"));
-                HttpResponseMessage response = await client.GetAsync($"api/Prenatal/Teta2");
+                HttpResponseMessage response = await client.GetAsync($"api/Immunization/Penta2");
                 if (response.IsSuccessStatusCode)
                 {
                     string contentrespose = await response.Content.ReadAsStringAsync();
-                    prenatalList = JsonConvert.DeserializeObject<prenatal[]>(contentrespose);
+                    immunizationList = JsonConvert.DeserializeObject<immunization[]>(contentrespose);
                     StateHasChanged();
                 }
                 else
@@ -122,17 +129,19 @@
         }
     }
 
+    immunization[]? immunizationList;
+    [Parameter] public child _child { get; set; } = new child();
     private async Task UpdateImmunization(string id)
     {
-        prenatal[]? _imm;
-        var ximm = from s in prenatalList where s.prenatalID == id select s;
+        immunization[]? _imm;
+        var ximm = from s in immunizationList where s.immunizationID == id select s;
         _imm = ximm.ToArray();
         _child.fullname = _imm[0].fullname;
-        _child.infoID = _imm[0].infoID;
+        _child.childID = _imm[0].childID;
         var parameters = new DialogParameters();
-        var update = prenatalList.FirstOrDefault(_ => _.prenatalID == id);
-        parameters.Add("xpre", update);
-        parameters.Add("xinfo", _child);
-        var dialog = await Dialog.Show<UpdatePrenatal>("Update Tetanus 2nd Dose", parameters).Result;
+        var update = immunizationList.FirstOrDefault(_ => _.immunizationID == id);
+        parameters.Add("ximm", update);
+        parameters.Add("xchild", _child);
+        var dialog = await Dialog.Show<UpdatePrenatal>("Update BCG", parameters).Result;
     }
 }

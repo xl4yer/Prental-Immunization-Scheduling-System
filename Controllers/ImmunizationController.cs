@@ -22,6 +22,27 @@ namespace Bhcirs.Controllers
             return ret;
         }
 
+        [HttpGet]
+        public async Task<List<immunization>> Penta1()
+        {
+            var ret = await xservices.Penta1();
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> Penta2()
+        {
+            var ret = await xservices.Penta2();
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> Penta3()
+        {
+            var ret = await xservices.Penta3();
+            return ret;
+        }
+
 
         [HttpPost]
         public async Task<int> AddImmunization([FromBody] immunization ximm)

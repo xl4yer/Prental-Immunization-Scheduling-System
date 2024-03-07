@@ -1,0 +1,148 @@
+﻿@page "/teta1"
+@inject NavigationManager Nav
+@inject ILocalStorageService localStorage
+@inject ISnackbar snackBar
+@inject IDialogService Dialog
+@using System.Net.Http.Headers
+@inject HttpClient httpClient
+
+<PageTitle>Tetanus 1st Dose</PageTitle>
+
+<style>
+    .mud-table-cell-custom-group {
+        font-weight: 500;
+    }
+
+    .mud-table-cell-custom-group-footer {
+        padding-bottom: 50px;
+        text-align: right;
+    }
+</style>
+
+<MudToolBar>
+    <h5>Tetanus 1st Dose</h5>
+</MudToolBar>
+@if (prenatalList != null && prenatalList.Any())
+{
+<MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
+          Items="@prenatalList"
+          GroupBy="@_groupDefinition"
+          GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+          GroupFooterClass="mb-4"
+          Dense="true"
+          @ref="_tableRef">
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.GroupName}: {context.Key}")
+        
+        </MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.fullname</MudTd>
+        <MudTd DataLabel="Status">
+            @if (context.status == "Scheduled")
+            {
+                <MudChip Color="Color.Primary" Size="Size.Small">@context.status</MudChip>
+            }
+            else
+            {
+                <MudChip Color="Color.Success" Size="Size.Small">@context.status</MudChip>
+            }
+        </MudTd>
+        <MudTd>
+            <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
+                <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.prenatalID))" Size="Size.Small" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-3" OnClick="@((args) => _tableRef?.ExpandAllGroups())">Expand all groups</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small" Class="mt-3 ml-3" OnClick="@((args) => _tableRef?.CollapseAllGroups())">Collapse all groups</MudButton>
+}
+else
+{
+    <p1>No Records Found</p1>
+}
+
+@code {
+    private MudTable<prenatal> _tableRef;
+    prenatal[]? prenatalList;
+    [Parameter] public info _child { get; set; } = new info();
+    private TableGroupDefinition<prenatal> _groupDefinition = new()
+        {
+            GroupName = "Date",
+            Indentation = false,
+            Expandable = true,
+            IsInitiallyExpanded = false,
+            Selector = (e) => e.date?.ToString("MMMM dd, yyyy"),
+        };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await loadTeta1();
+        }
+    }
+    private async Task Refresh()
+    {
+        await loadTeta1();
+    }
+
+    private async Task loadTeta1()
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"{Nav.BaseUri}");
+                client.DefaultRequestHeaders.Authorization = new
+                AuthenticationHeaderValue("Bearer", await
+                localStorage.GetItemAsStringAsync("token"));
+                HttpResponseMessage response = await client.GetAsync($"api/Prenatal/Teta1");
+                if (response.IsSuccessStatusCode)
+                {
+                    string contentrespose = await response.Content.ReadAsStringAsync();
+                    prenatalList = JsonConvert.DeserializeObject<prenatal[]>(contentrespose);
+                    StateHasChanged();
+                }
+                else
+                {
+                    snackBar.Add($"Warning: {response.StatusCode}", Severity.Warning);
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //
+        }
+    }
+
+    private async Task UpdateImmunization(string id)
+    {
+        prenatal[]? _imm;
+        var ximm = from s in prenatalList where s.prenatalID == id select s;
+        _imm = ximm.ToArray();
+        _child.fullname = _imm[0].fullname;
+        _child.infoID = _imm[0].infoID;
+        var parameters = new DialogParameters();
+        var update = prenatalList.FirstOrDefault(_ => _.prenatalID == id);
+        parameters.Add("xpre", update);
+        parameters.Add("xinfo", _child);
+        var dialog = await Dialog.Show<UpdatePrenatal>("Update Tetanus 1st Dose", parameters).Result;
+    }
+}

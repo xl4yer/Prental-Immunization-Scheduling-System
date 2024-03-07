@@ -9,7 +9,7 @@
 @inject ISnackbar snackBar
 
 <PageTitle>Add Immunization</PageTitle>
-
+<MudCard Style="height:600px">
 <MudToolBar>
     <h5>Add Immunization Schedule</h5>
 </MudToolBar>
@@ -41,6 +41,7 @@
         <MudButton Variant="Variant.Outlined" Size="Size.Medium" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
     </MudToolBar>
 </MudContainer>
+</MudCard>
 
 @code {
     private string text { get; set; } = "";
