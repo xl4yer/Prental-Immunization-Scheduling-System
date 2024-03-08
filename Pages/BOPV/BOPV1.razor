@@ -22,6 +22,12 @@
 <MudToolBar>
     <h5>BOPV 1st Dose</h5>
 </MudToolBar>
+
+<MudToolBar>
+    <MudSpacer /> <MudSpacer /> <MudSpacer />
+    <MudTextField @bind-Value="txtchild" Clearable TextChanged="SearchBOPV1" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
+    </MudTextField>
+</MudToolBar>
 @if (immunizationList != null && immunizationList.Any())
 {
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
@@ -77,6 +83,35 @@ else
 }
 
 @code {
+    private string search { get; set; } = "";
+    private string txtchild { get; set; } = "";
+
+    private async Task SearchBOPV1()
+    {
+        if (string.IsNullOrWhiteSpace(txtchild))
+        {
+            StateHasChanged();
+            return;
+        }
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+            await localStorage.GetItemAsStringAsync("token"));
+            HttpResponseMessage response = await client.GetAsync($"api/immunization/SearchBOPV1?search={txtchild}");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentrespose = await response.Content.ReadAsStringAsync();
+                immunizationList = JsonConvert.DeserializeObject<immunization[]>(contentrespose);
+                StateHasChanged();
+            }
+            else
+            {
+                snackBar.Add($"Warning: {response.StatusCode}", Severity.Warning);
+            }
+        }
+    }
+    
     private MudTable<immunization> _tableRef;
 
     private TableGroupDefinition<immunization> _groupDefinition = new()
@@ -84,7 +119,7 @@ else
             GroupName = "Date",
             Indentation = false,
             Expandable = true,
-            IsInitiallyExpanded = false,
+            IsInitiallyExpanded = true,
             Selector = (e) => e.date?.ToString("MMMM dd, yyyy")
         };
 

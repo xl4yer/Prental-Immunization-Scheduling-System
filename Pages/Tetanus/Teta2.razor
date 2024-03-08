@@ -23,6 +23,13 @@
     <h5>Tetanus 2nd Dose</h5>
 </MudToolBar>
 
+<MudToolBar>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => Refresh())">Refresh</MudButton>&nbsp;
+    <MudSpacer /> <MudSpacer /> <MudSpacer />
+    <MudTextField @bind-Value="txtinfo" Clearable TextChanged="SearchInfo" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
+    </MudTextField>
+</MudToolBar>
+
 @if (prenatalList != null && prenatalList.Any())
 {
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
@@ -88,9 +95,38 @@ else
             GroupName = "Date",
             Indentation = false,
             Expandable = true,
-            IsInitiallyExpanded = false,
+            IsInitiallyExpanded = true,
             Selector = (e) => e.date?.ToString("MMMM dd, yyyy")
         };
+
+    private string search { get; set; } = "";
+    private string txtinfo { get; set; } = "";
+
+    private async Task SearchInfo()
+    {
+        if (string.IsNullOrWhiteSpace(txtinfo))
+        {
+            StateHasChanged();
+            return;
+        }
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+            await localStorage.GetItemAsStringAsync("token"));
+            HttpResponseMessage response = await client.GetAsync($"api/Prenatal/SearchTeta2?search={txtinfo}");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentrespose = await response.Content.ReadAsStringAsync();
+                prenatalList = JsonConvert.DeserializeObject<prenatal[]>(contentrespose);
+                StateHasChanged();
+            }
+            else
+            {
+                snackBar.Add($"Warning: {response.StatusCode}", Severity.Warning);
+            }
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

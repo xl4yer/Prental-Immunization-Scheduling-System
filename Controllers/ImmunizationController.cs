@@ -127,5 +127,26 @@ namespace Bhcirs.Controllers
             var ret = await xservices.AddImmunization(ximm);
             return ret;
         }
+
+        [HttpPut]
+        public async Task<int> UpdateImmunization([FromBody] immunization ximm)
+        {
+            var ret = await xservices.UpdateImmunization(ximm);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchBOPV1(string search)
+        {
+            var ret = await xservices.SearchBOPV1(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchBCG(string search)
+        {
+            var ret = await xservices.SearchBCG(search);
+            return ret;
+        }
     }
 }

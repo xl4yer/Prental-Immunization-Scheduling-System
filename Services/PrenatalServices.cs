@@ -55,6 +55,48 @@ namespace Bhcirs.Services
             return xpre;
         }
 
+        public async Task<List<prenatal>> SearchTeta1(string search)
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchTeta1", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
         public async Task<List<prenatal>> Teta2()
         {
             List<prenatal> xpre = new List<prenatal>();
@@ -94,6 +136,48 @@ namespace Bhcirs.Services
             return xpre;
         }
 
+
+        public async Task<List<prenatal>> SearchTeta2(string search)
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchTeta2", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
 
         public async Task<int> AddPrenatal(prenatal xpre)
         {

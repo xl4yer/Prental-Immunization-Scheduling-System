@@ -42,5 +42,19 @@ namespace Bhcirs.Controllers
             var ret = await xservices.UpdatePrenatal(xpre);
             return ret;
         }
+
+        [HttpGet]
+        public async Task<List<prenatal>> SearchTeta1(string search)
+        {
+            var ret = await xservices.SearchTeta1(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<prenatal>> SearchTeta2(string search)
+        {
+            var ret = await xservices.SearchTeta2(search);
+            return ret;
+        }
     }
 }

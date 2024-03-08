@@ -92,6 +92,7 @@
                     await InvokeAsync(async () =>
                     {
                         snackBar.Add($"Done: Successfully Updated!", Severity.Success);
+                        MudDialog.Cancel();
                         StateHasChanged();
                     });
                 }
