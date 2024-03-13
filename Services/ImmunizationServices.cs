@@ -485,6 +485,134 @@ namespace Bhcirs.Services
             return ximm;
         }
 
+        public async Task<List<immunization>> SearchPenta1(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchPenta1", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+        public async Task<List<immunization>> SearchPenta2(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchPenta2", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+        public async Task<List<immunization>> SearchPenta3(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchPenta3", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+
+
         public async Task<List<immunization>> Penta2()
         {
             List<immunization> ximm = new List<immunization>();
@@ -636,6 +764,90 @@ namespace Bhcirs.Services
                 {
                     await con.OpenAsync().ConfigureAwait(false);
                     var com = new MySqlCommand("SearchBOPV1", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+        public async Task<List<immunization>> SearchBOPV2(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchBOPV2", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+        public async Task<List<immunization>> SearchBOPV3(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchBOPV3", con)
                     {
                         CommandType = CommandType.StoredProcedure,
                     };

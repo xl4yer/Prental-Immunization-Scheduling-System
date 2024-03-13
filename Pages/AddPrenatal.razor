@@ -16,11 +16,11 @@
 </MudToolBar>
 <MudContainer Style="max-height: 500px; overflow-y: scroll">
     <p1>Name</p1>
-    <MudAutocomplete Clearable T="info" Label="Search Patient Name" @bind-Value="xinfo" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
+    <MudAutocomplete Clearable T="info" Placeholder="Search Patient Name" @bind-Value="xinfo" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
     <p1>Scheduled Date</p1>
     <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="sched" Placeholder="Select Date" /><br />
     <p1>Vaccine</p1>
-    <MudSelect @bind-Value="@xpre.vaccine" Margin="Margin.Dense" Label="Select Vaccine" T="string" Variant="Variant.Outlined">
+    <MudSelect @bind-Value="@xpre.vaccine" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
         <MudSelectItem Value="@("Tetanus 1st Dose")" />
         <MudSelectItem Value="@("Tetanus 2nd Dose")" />
     </MudSelect><br />

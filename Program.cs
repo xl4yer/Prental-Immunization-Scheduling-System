@@ -1,4 +1,4 @@
-using Bhcirs.Class;
+﻿using Bhcirs.Class;
 using Bhcirs.Data;
 using Bhcirs.Services;
 using Blazored.LocalStorage;

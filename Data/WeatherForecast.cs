@@ -1,4 +1,4 @@
-namespace Bhcirs.Data
+﻿namespace Bhcirs.Data
 {
     public class WeatherForecast
     {

@@ -24,10 +24,11 @@
 </MudToolBar>
 
 <MudToolBar>
-    <MudSpacer /> <MudSpacer /> <MudSpacer />
-    <MudTextField @bind-Value="txtchild" Clearable TextChanged="SearchBOPV1" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
+    <MudSpacer /> <MudSpacer />
+    <MudTextField @bind-Value="txtchild" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
     </MudTextField>
 </MudToolBar>
+
 @if (immunizationList != null && immunizationList.Any())
 {
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
@@ -86,7 +87,7 @@ else
     private string search { get; set; } = "";
     private string txtchild { get; set; } = "";
 
-    private async Task SearchBOPV1()
+    private async Task Search()
     {
         if (string.IsNullOrWhiteSpace(txtchild))
         {

@@ -25,8 +25,8 @@
 
 <MudToolBar>
         <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => Refresh())">Refresh</MudButton>&nbsp;
-    <MudSpacer /> <MudSpacer /> <MudSpacer />
-    <MudTextField @bind-Value="txtinfo" Clearable TextChanged="SearchInfo" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
+    <MudSpacer /> <MudSpacer /> 
+    <MudTextField @bind-Value="txtinfo" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
     </MudTextField>
 </MudToolBar>
 
@@ -90,7 +90,7 @@ else
     private string search { get; set; } = "";
     private string txtinfo { get; set; } = "";
 
-    private async Task SearchInfo()
+    private async Task Search()
     {
         if (string.IsNullOrWhiteSpace(txtinfo))
         {

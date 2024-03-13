@@ -135,6 +135,37 @@ namespace Bhcirs.Controllers
             return ret;
         }
 
+
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchBCG(string search)
+        {
+            var ret = await xservices.SearchBCG(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchPenta1(string search)
+        {
+            var ret = await xservices.SearchPenta1(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchPenta2(string search)
+        {
+            var ret = await xservices.SearchPenta2(search);
+            return ret;
+        }
+
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchPenta3(string search)
+        {
+            var ret = await xservices.SearchPenta3(search);
+            return ret;
+        }
+
         [HttpGet]
         public async Task<List<immunization>> SearchBOPV1(string search)
         {
@@ -143,9 +174,16 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
-        public async Task<List<immunization>> SearchBCG(string search)
+        public async Task<List<immunization>> SearchBOPV2(string search)
         {
-            var ret = await xservices.SearchBCG(search);
+            var ret = await xservices.SearchBOPV2(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchBOPV3(string search)
+        {
+            var ret = await xservices.SearchBOPV3(search);
             return ret;
         }
     }

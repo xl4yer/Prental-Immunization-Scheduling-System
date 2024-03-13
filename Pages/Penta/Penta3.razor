@@ -23,6 +23,14 @@
     <h5>Penta 3rd Dose</h5>
 </MudToolBar>
 
+
+<MudToolBar>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => Refresh())">Refresh</MudButton>&nbsp;
+    <MudSpacer /> <MudSpacer />
+    <MudTextField @bind-Value="txtchild" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
+    </MudTextField>
+</MudToolBar>
+
 @if (immunizationList != null && immunizationList.Any())
 {
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
@@ -98,6 +106,35 @@ else
     private async Task Refresh()
     {
         await loadBCG();
+    }
+
+    private string search { get; set; } = "";
+    private string txtchild { get; set; } = "";
+
+    private async Task Search()
+    {
+        if (string.IsNullOrWhiteSpace(txtchild))
+        {
+            StateHasChanged();
+            return;
+        }
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+            await localStorage.GetItemAsStringAsync("token"));
+            HttpResponseMessage response = await client.GetAsync($"api/immunization/SearchPenta3?search={txtchild}");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentrespose = await response.Content.ReadAsStringAsync();
+                immunizationList = JsonConvert.DeserializeObject<immunization[]>(contentrespose);
+                StateHasChanged();
+            }
+            else
+            {
+                snackBar.Add($"Warning: {response.StatusCode}", Severity.Warning);
+            }
+        }
     }
 
     private async Task loadBCG()
