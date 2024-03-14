@@ -95,6 +95,48 @@ namespace Bhcirs.Services
             return ximm;
         }
 
+        public async Task<List<immunization>> SearchPCV131(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchPCV131", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
         public async Task<List<immunization>> PCV132()
         {
             List<immunization> ximm = new List<immunization>();
@@ -107,6 +149,91 @@ namespace Bhcirs.Services
                     {
                         CommandType = CommandType.StoredProcedure,
                     };
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+
+        public async Task<List<immunization>> SearchPCV132(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchPCV132", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
+
+        public async Task<List<immunization>> SearchPCV133(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchPCV133", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
                     var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
                     while (await rdr.ReadAsync().ConfigureAwait(false))
                     {
@@ -290,6 +417,48 @@ namespace Bhcirs.Services
             return ximm;
         }
 
+
+        public async Task<List<immunization>> SearchIPV1(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchIPV1", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
         public async Task<List<immunization>> IPV2()
         {
             List<immunization> ximm = new List<immunization>();
@@ -329,6 +498,48 @@ namespace Bhcirs.Services
             return ximm;
         }
 
+
+        public async Task<List<immunization>> SearchIPV2(string search)
+        {
+            List<immunization> ximm = new List<immunization>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchIPV2", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        ximm.Add(new immunization
+                        {
+                            immunizationID = rdr["immunizationID"].ToString(),
+                            childID = rdr["childID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return ximm;
+        }
         public async Task<List<immunization>> BOPV1()
         {
             List<immunization> ximm = new List<immunization>();

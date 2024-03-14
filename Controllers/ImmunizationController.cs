@@ -186,5 +186,40 @@ namespace Bhcirs.Controllers
             var ret = await xservices.SearchBOPV3(search);
             return ret;
         }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchIPV1(string search)
+        {
+            var ret = await xservices.SearchIPV1(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchIPV2(string search)
+        {
+            var ret = await xservices.SearchIPV2(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchPCV131(string search)
+        {
+            var ret = await xservices.SearchPCV131(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchPCV132(string search)
+        {
+            var ret = await xservices.SearchPCV132(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchPCV133(string search)
+        {
+            var ret = await xservices.SearchPCV133(search);
+            return ret;
+        }
     }
 }

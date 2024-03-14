@@ -24,6 +24,7 @@
 </MudToolBar>
 
 <MudToolBar>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => Refresh())">Refresh</MudButton>&nbsp;
     <MudSpacer /> <MudSpacer />
     <MudTextField @bind-Value="txtchild" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
     </MudTextField>
@@ -69,6 +70,9 @@
             <MudTd>
                 <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
                     <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.immunizationID))" Size="Size.Small" />
+                </MudTooltip>
+                <MudTooltip Text="Done" Arrow="true" Placement="Placement.Right">
+                    <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" />
                 </MudTooltip>
             </MudTd>
         </RowTemplate>
