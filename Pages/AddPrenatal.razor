@@ -7,6 +7,7 @@
 @inject ILocalStorageService localStorage
 @inject IJSRuntime jsRuntime
 @inject ISnackbar snackBar
+@inject HttpClient http
 
 <PageTitle>Add Prenatal</PageTitle>
 
@@ -47,6 +48,32 @@
         return xinfo;
     }
 
+    public async Task PhilSms()
+    {
+        var url = "https://app.philsms.com/api/v3/sms/send";
+        var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
+        var request = new
+        {
+            recipient = $"63{xinfo.contact}",
+            sender_id = "PhilSMS",
+            type = "plain",
+            message = $"{xinfo.fullname}, your scheduled {xpre.vaccine} is on {xpre.date?.ToString("MMMM d, yyyy")}"
+        };
+
+        var json = JsonConvert.SerializeObject(request);
+        var content = new StringContent(json);
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await http.PostAsync(url, content);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Successfully Sent");
+        }
+        else
+        {
+            Console.WriteLine("Failed to Send");
+        }
+    }
+
     private async Task Submit()
     {
         int i = 0;
@@ -76,6 +103,7 @@
                 {
                     await InvokeAsync(async () =>
                     {
+                        // await PhilSms();
                         snackBar.Add($"Done: Successfully Saved!", Severity.Success);
                         StateHasChanged();
                     });

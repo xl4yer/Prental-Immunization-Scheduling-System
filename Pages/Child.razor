@@ -164,15 +164,16 @@ else
     private async Task UpdateChild(string id)
     {
         child[]? _child;
-        var xchild = from s in childList where s.childID == id select s;
-        _child = xchild.ToArray();
-        _info.fullname = _child[0].fullname;
+        var xpatient = from s in childList where s.childID == id select s;
+        _child = xpatient.ToArray();
         _info.infoID = _child[0].infoID;
+        _info.fullname = _child[0].fullname;
         var parameters = new DialogParameters();
         var update = childList.FirstOrDefault(_ => _.childID == id);
-        parameters.Add("xchild", update);
         parameters.Add("xinfo", _info);
-        var dialog = await Dialog.Show<UpdateChild>("Update Child Information", parameters).Result;
+        parameters.Add("xchild", update);
+
+        var dialog = await Dialog.Show<UpdateChild>("Update Child", parameters).Result;
     }
 
     private async Task RefreshChild()

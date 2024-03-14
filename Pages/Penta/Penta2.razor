@@ -71,7 +71,7 @@
                     <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.immunizationID))" Size="Size.Small" />
                 </MudTooltip>
                 <MudTooltip Text="Done" Arrow="true" Placement="Placement.Right">
-                    <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" />
+                    <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" @onclick="(e=> UpdateStatus(context.immunizationID))" />
                 </MudTooltip>
         </MudTd>
     </RowTemplate>
@@ -182,5 +182,20 @@ else
         parameters.Add("ximm", update);
         parameters.Add("xchild", _child);
         var dialog = await Dialog.Show<UpdateImmunization>("Update BCG", parameters).Result;
+    }
+
+    private async Task UpdateStatus(string id)
+    {
+        immunization[]? _imm;
+        var ximm = from s in immunizationList where s.immunizationID == id select s;
+        _imm = ximm.ToArray();
+        _child.fullname = _imm[0].fullname;
+        _child.childID = _imm[0].childID;
+        var parameters = new DialogParameters();
+        var update = immunizationList.FirstOrDefault(_ => _.immunizationID == id);
+        var options = new DialogOptions { MaxWidth = MaxWidth.ExtraSmall };
+        parameters.Add("ximm", update);
+        parameters.Add("xchild", _child);
+        var dialog = await Dialog.Show<UpdateImmStatus>("Mark as Done?", parameters, options).Result;
     }
 }

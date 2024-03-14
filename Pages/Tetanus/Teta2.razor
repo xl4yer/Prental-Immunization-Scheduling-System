@@ -75,7 +75,7 @@
                     <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => UpdateImmunization(context.prenatalID))" Size="Size.Small" />
                 </MudTooltip>
                 <MudTooltip Text="Done" Arrow="true" Placement="Placement.Right">
-                    <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" />
+                    <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" @onclick="(e => UpdateStatus(context.prenatalID))" />
                 </MudTooltip>
             </MudTd>
         </RowTemplate>
@@ -185,5 +185,20 @@ else
         parameters.Add("xpre", update);
         parameters.Add("xinfo", _child);
         var dialog = await Dialog.Show<UpdatePrenatal>("Update Tetanus 2nd Dose", parameters).Result;
+    }
+
+    private async Task UpdateStatus(string id)
+    {
+        prenatal[]? _imm;
+        var ximm = from s in prenatalList where s.prenatalID == id select s;
+        _imm = ximm.ToArray();
+        _child.fullname = _imm[0].fullname;
+        _child.infoID = _imm[0].infoID;
+        var parameters = new DialogParameters();
+        var update = prenatalList.FirstOrDefault(_ => _.prenatalID == id);
+        var options = new DialogOptions { MaxWidth = MaxWidth.ExtraSmall };
+        parameters.Add("xpre", update);
+        parameters.Add("xinfo", _child);
+        var dialog = await Dialog.Show<UpdatePreStatus>("Mark as done?", parameters,options).Result;
     }
 }

@@ -24,7 +24,7 @@ namespace Bhcirs.Services
                 try
                 {
                     await con.OpenAsync().ConfigureAwait(false);
-                    var com = new MySqlCommand("viewchild", con)
+                    var com = new MySqlCommand("ViewChild", con)
                     {
                         CommandType = CommandType.StoredProcedure,
                     };
@@ -83,7 +83,7 @@ namespace Bhcirs.Services
                 try
                 {
                     await con.OpenAsync().ConfigureAwait(false);
-                    var com = new MySqlCommand("searchchild", con)
+                    var com = new MySqlCommand("SearchChild", con)
                     {
                         CommandType = CommandType.StoredProcedure,
                     };
@@ -106,6 +106,7 @@ namespace Bhcirs.Services
                             delivery = rdr["delivery"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             age = rdr["age"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -133,7 +134,7 @@ namespace Bhcirs.Services
                     {
                         CommandType = CommandType.StoredProcedure,
                     };
-                    com.Parameters.AddWithValue("_childID", xchild.infoID);
+                    com.Parameters.AddWithValue("_childID", xchild.childID);
                     com.Parameters.AddWithValue("_infoID", xchild.infoID);
                     com.Parameters.AddWithValue("_fname", xchild.fname);
                     com.Parameters.AddWithValue("_mname", xchild.mname);

@@ -2,7 +2,7 @@
 {
     public class info
     {
-        public string infoID { get; set; }
+        public string infoID { get; set; } = "";
         public string fname { get; set; } = "";
         public string mname { get; set; } = "";
         public string lname { get; set; } = "";
