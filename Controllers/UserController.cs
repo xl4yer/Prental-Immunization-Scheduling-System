@@ -23,5 +23,12 @@ namespace Bhcirs.Controllers
             var ret = await xservices.Login(user, pwd);
             return ret;
         }
+
+        [HttpPut]
+        public async Task<int> UpdateAdminPassword([FromBody] users xusers)
+        {
+            var ret = await xservices.UpdateAdminPassword(xusers);
+            return ret;
+        }
     }
 }

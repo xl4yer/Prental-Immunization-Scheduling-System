@@ -1,4 +1,4 @@
-﻿@page "/bopv2"
+﻿@page "/mmr2"
 @inject NavigationManager Nav
 @inject ILocalStorageService localStorage
 @inject ISnackbar snackBar
@@ -6,7 +6,7 @@
 @using System.Net.Http.Headers
 @inject HttpClient httpClient
 
-<PageTitle>Penta 1st Dose</PageTitle>
+<PageTitle>MMR 2nd Dose</PageTitle>
 
 <style>
     .mud-table-cell-custom-group {
@@ -20,7 +20,7 @@
 </style>
 
 <MudToolBar>
-    <h5>BOPV 2nd Dose</h5>
+    <h5>MMR 2nd Dose</h5>
 </MudToolBar>
 
 <MudToolBar>
@@ -29,6 +29,7 @@
     <MudTextField @bind-Value="txtchild" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
     </MudTextField>
 </MudToolBar>
+
 
 @if (immunizationList != null && immunizationList.Any())
 {
@@ -122,7 +123,7 @@ else
             client.BaseAddress = new Uri($"{Nav.BaseUri}");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
             await localStorage.GetItemAsStringAsync("token"));
-            HttpResponseMessage response = await client.GetAsync($"api/immunization/SearchBOPV2?search={txtchild}");
+            HttpResponseMessage response = await client.GetAsync($"api/immunization/SearchMMR2?search={txtchild}");
             if (response.IsSuccessStatusCode)
             {
                 string contentrespose = await response.Content.ReadAsStringAsync();
@@ -151,7 +152,7 @@ else
                 client.DefaultRequestHeaders.Authorization = new
                 AuthenticationHeaderValue("Bearer", await
                 localStorage.GetItemAsStringAsync("token"));
-                HttpResponseMessage response = await client.GetAsync($"api/Immunization/BOPV2");
+                HttpResponseMessage response = await client.GetAsync($"api/Immunization/MMR2");
                 if (response.IsSuccessStatusCode)
                 {
                     string contentrespose = await response.Content.ReadAsStringAsync();
@@ -184,7 +185,7 @@ else
         var update = immunizationList.FirstOrDefault(_ => _.immunizationID == id);
         parameters.Add("ximm", update);
         parameters.Add("xchild", _child);
-        var dialog = await Dialog.Show<UpdateImmunization>("Update BCG", parameters).Result;
+        var dialog = await Dialog.Show<UpdateImmunization>("Update MMR 2nd Dose", parameters).Result;
     }
 
     private async Task UpdateStatus(string id)

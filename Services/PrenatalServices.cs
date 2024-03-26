@@ -179,6 +179,252 @@ namespace Bhcirs.Services
             return xpre;
         }
 
+        public async Task<List<prenatal>> Teta3()
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("Teta3", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
+        public async Task<List<prenatal>> SearchTeta3(string search)
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchTeta3", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
+        public async Task<List<prenatal>> Teta4()
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("Teta4", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
+        public async Task<List<prenatal>> SearchTeta4(string search)
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchTeta4", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
+
+
+        public async Task<List<prenatal>> Teta5()
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("Teta5", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
+        public async Task<List<prenatal>> SearchTeta5(string search)
+        {
+            List<prenatal> xpre = new List<prenatal>();
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("SearchTeta5", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("search", search);
+                    com.Parameters.AddWithValue("@searchWildcard", $"{search}%");
+                    var rdr = await com.ExecuteReaderAsync().ConfigureAwait(false);
+                    while (await rdr.ReadAsync().ConfigureAwait(false))
+                    {
+                        xpre.Add(new prenatal
+                        {
+                            prenatalID = rdr["prenatalID"].ToString(),
+                            infoID = rdr["infoID"].ToString(),
+                            date = Convert.ToDateTime(rdr["date"].ToString()),
+                            vaccine = rdr["vaccine"].ToString(),
+                            fullname = rdr["fullname"].ToString(),
+                            status = rdr["status"].ToString(),
+                        });
+                    }
+                    await rdr.CloseAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return xpre;
+        }
+
+
         public async Task<int> AddPrenatal(prenatal xpre)
         {
             using (var con = new MySqlConnection(_constring.GetConnection()))

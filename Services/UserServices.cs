@@ -22,6 +22,33 @@ namespace Bhcirs.Services
             Configuration = configuration;
             _appSetting = appSettings.Value;
         }
+
+        public async Task<int> UpdateAdminPassword(users xuser)
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait(false);
+                    var com = new MySqlCommand("UpdateAdminPassword", con)
+                    {
+                        CommandType = CommandType.StoredProcedure,
+                    };
+                    com.Parameters.AddWithValue("_userID", xuser.userID);
+                    com.Parameters.AddWithValue("_password", xuser.password);
+                    return await com.ExecuteNonQueryAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                }
+                finally
+                {
+                    await con.CloseAsync().ConfigureAwait(false);
+                }
+            }
+            return 0;
+        }
         public async Task<List<users>> Login(string user, string pwd)
         {
             List<users> xuser = new();

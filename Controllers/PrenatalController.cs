@@ -28,6 +28,26 @@ namespace Bhcirs.Controllers
             var ret = await xservices.Teta2();
             return ret;
         }
+        [HttpGet]
+        public async Task<List<prenatal>> Teta3()
+        {
+            var ret = await xservices.Teta3();
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<prenatal>> Teta4()
+        {
+            var ret = await xservices.Teta4();
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<prenatal>> Teta5()
+        {
+            var ret = await xservices.Teta5();
+            return ret;
+        }
 
         [HttpPost]
         public async Task<int> AddPrenatal([FromBody] prenatal xpre)
@@ -54,6 +74,27 @@ namespace Bhcirs.Controllers
         public async Task<List<prenatal>> SearchTeta2(string search)
         {
             var ret = await xservices.SearchTeta2(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<prenatal>> SearchTeta3(string search)
+        {
+            var ret = await xservices.SearchTeta3(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<prenatal>> SearchTeta4(string search)
+        {
+            var ret = await xservices.SearchTeta4(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<prenatal>> SearchTeta5(string search)
+        {
+            var ret = await xservices.SearchTeta5(search);
             return ret;
         }
     }

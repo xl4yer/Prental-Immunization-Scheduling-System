@@ -2,6 +2,7 @@
 using Bhcirs.Data;
 using Bhcirs.Services;
 using Blazored.LocalStorage;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -26,6 +27,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<MudThemeProvider>();
 builder.Services.AddHttpClient();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSweetAlert2();
 
 builder.Services.AddCors(options =>
 {
@@ -80,3 +82,6 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 app.Run();
+
+
+

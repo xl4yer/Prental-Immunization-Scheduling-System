@@ -1,0 +1,132 @@
+﻿@page "/settings"
+@inject ILocalStorageService localStorage
+@using System.Net.Http.Headers
+@using Bhcirs.Models
+@inject ISnackbar snackBar
+@inject NavigationManager Nav
+
+<br />
+<MudCard Elevation="25">
+    <MudCardContent>
+        <MudToolBar>
+            <h5>Update Password</h5>
+        </MudToolBar>
+        @if (hide)
+        {
+            <MudTextField @bind-Value="@xuserID" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+        }
+        <p1>*New Password</p1>
+        <MudTextField @bind-Value="@xuser.password" For="@(() => xuser.password)" Margin="Margin.Dense" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="Click" AdornmentAriaLabel="Show Password" />
+        <br />
+        <p1>*Confirm Password</p1>
+        <MudTextField @bind-Value="@password2" For="@(() => password2)" Margin="Margin.Dense" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="Click" AdornmentAriaLabel="Show Password" />
+        <br />
+        <MudToolBar>
+            <MudSpacer /> <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Clear">Clear</MudButton> &nbsp;
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="Update">Update Password</MudButton>
+        </MudToolBar>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public users xuser { get; set; } = new users();
+    public string Text = "";
+    public string password2 = "";
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    bool isShow;
+    bool hide;
+
+    public string xuserID = "";
+    public string xName = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            xuserID = await localStorage.GetItemAsStringAsync("userID");
+            xName = await localStorage.GetItemAsStringAsync("name");
+            StateHasChanged();
+        }
+    }
+
+    void Clear()
+    {
+        xuser.password = "";
+        password2 = "";
+    }
+
+    void Click()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    private async Task Update()
+    {
+        if (xuser.password != password2)
+        {
+            snackBar.Add($"Error: Password Does Not Match", Severity.Warning);
+        }
+        else
+        {
+            int i = 0;
+            try
+            {
+                var x = new users
+                    {
+                        userID = xuserID,
+                        password = xuser.password
+                    };
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri($"{Nav.BaseUri}");
+                    var json = JsonConvert.SerializeObject(x);
+                    HttpContent content = new StringContent(json);
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                    await localStorage.GetItemAsStringAsync("token"));
+                    HttpResponseMessage response = await client.PutAsync($"api/User/UpdateAdminPassword", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string contentresponse = await response.Content.ReadAsStringAsync();
+                        i = JsonConvert.DeserializeObject<int>(contentresponse);
+                        if (i > 0)
+                        {
+                            await InvokeAsync(async () =>
+                            {
+                                Clear();
+                                snackBar.Add($"Done: Successfully Updated!", Severity.Success);
+
+                                await InvokeAsync(StateHasChanged);
+                            });
+                        }
+                    }
+                    else
+                    {
+                        await InvokeAsync(async () =>
+                        {
+                            snackBar.Add($"Error!", Severity.Error);
+
+                            StateHasChanged();
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+    }
+}

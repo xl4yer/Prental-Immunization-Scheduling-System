@@ -5,16 +5,15 @@
 @inject IDialogService Dialog
 @using System.Net.Http.Headers
 
-<PageTitle>Prenatal</PageTitle>
+<PageTitle>Prenatal Record</PageTitle>
 
 <MudToolBar>
     <MudText Typo="Typo.h6">Prenatal Information</MudText>
 </MudToolBar>
 
-
 <MudToolBar>
-    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => RefreshInfo())">Refresh</MudButton>&nbsp;
-    <MudButton Color="Color.Tertiary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => AddInfo())">Add</MudButton>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled"  @onclick="(e => RefreshInfo())">Refresh</MudButton>&nbsp;
+    <MudButton Color="Color.Tertiary" Variant="Variant.Filled"  @onclick="(e => AddInfo())">Add</MudButton>
 </MudToolBar>
 
 <MudToolBar>

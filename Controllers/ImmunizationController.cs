@@ -40,17 +40,17 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
-        public async Task<List<immunization>> MCV1()
+        public async Task<List<immunization>> MMR1()
         {
-            var ret = await xservices.MCV1();
+            var ret = await xservices.MMR1();
             return ret;
         }
 
 
         [HttpGet]
-        public async Task<List<immunization>> MCV2()
+        public async Task<List<immunization>> MMR2()
         {
-            var ret = await xservices.MCV2();
+            var ret = await xservices.MMR2();
             return ret;
         }
 
@@ -219,6 +219,20 @@ namespace Bhcirs.Controllers
         public async Task<List<immunization>> SearchPCV133(string search)
         {
             var ret = await xservices.SearchPCV133(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchMMR1(string search)
+        {
+            var ret = await xservices.SearchMMR1(search);
+            return ret;
+        }
+
+        [HttpGet]
+        public async Task<List<immunization>> SearchMMR2(string search)
+        {
+            var ret = await xservices.SearchMMR2(search);
             return ret;
         }
     }

@@ -5,16 +5,18 @@
 @inject IDialogService dialogService
 @using System.Net.Http.Headers
 @inject IDialogService Dialog
+@inject IJSRuntime IJS
+@inject SweetAlertService Swal
 
-<PageTitle>Immunization</PageTitle>
 
+<PageTitle>Child Record</PageTitle>
 
 <MudToolBar>
     <MudText Typo="Typo.h6">Child Information</MudText>
 </MudToolBar>
 <MudToolBar>
-    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => RefreshChild())">Refresh</MudButton>&nbsp;
-    <MudButton Color="Color.Tertiary" Variant="Variant.Filled" Size="Size.Small" @onclick="(e => AddChild())">Add</MudButton>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled"  @onclick="(e => RefreshChild())">Refresh</MudButton>&nbsp;
+    <MudButton Color="Color.Tertiary" Variant="Variant.Filled"  @onclick="(e => AddChild())">Add</MudButton>
 </MudToolBar>
 <MudToolBar>
     <MudSpacer /> <MudSpacer /> 
@@ -167,7 +169,7 @@ else
         var xpatient = from s in childList where s.childID == id select s;
         _child = xpatient.ToArray();
         _info.infoID = _child[0].infoID;
-        _info.fullname = _child[0].fullname;
+        _info.fullname = _child[0].mothersname;
         var parameters = new DialogParameters();
         var update = childList.FirstOrDefault(_ => _.childID == id);
         parameters.Add("xinfo", _info);

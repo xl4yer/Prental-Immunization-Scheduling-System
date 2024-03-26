@@ -30,15 +30,16 @@
          <MudSelectItem Value="@("BOPV 3rd Dose")" />
         <MudSelectItem Value="@("IPV 1st Dose")" />
         <MudSelectItem Value="@("IPV 2nd Dose")" />
-         <MudSelectItem Value="@("MCV 1st Dose")" />
-         <MudSelectItem Value="@("MCV 2nd Dose")" />
+         <MudSelectItem Value="@("MMR 1st Dose")" />
+         <MudSelectItem Value="@("MMR 2nd Dose")" />
          <MudSelectItem Value="@("PCV13 1st Dose")" />
         <MudSelectItem Value="@("PCV13 2nd Dose")" />
         <MudSelectItem Value="@("PCV13 3rd Dose")" />
     </MudSelect><br />
     <MudToolBar>
         <MudSpacer />
-        <MudButton Variant="Variant.Outlined" Size="Size.Medium" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
+            <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Warning" @onclick="Clear">Clear</MudButton> &nbsp;
+        <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
     </MudToolBar>
 </MudContainer>
 </MudCard>
@@ -57,6 +58,13 @@
         await localStorage.GetItemAsStringAsync("token"));
         var xchild = await httpClient.GetFromJsonAsync<List<child>>($"api/Child/SearchChild?search={value}");
         return xchild;
+    }
+     
+    public async Task Clear()
+    {
+        xchild.fullname = string.Empty;
+        ximm.vaccine = "";
+        sched = DateTime.Now;
     }
 
     public async Task PhilSms()
@@ -114,7 +122,7 @@
                 {
                     await InvokeAsync(async () =>
                     {
-                        await PhilSms();
+                        // await PhilSms();
                         snackBar.Add($"Done: Successfully Saved!", Severity.Success);
                         StateHasChanged();
                     });
