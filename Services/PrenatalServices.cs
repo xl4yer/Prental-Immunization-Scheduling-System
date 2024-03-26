@@ -15,6 +15,18 @@ namespace Bhcirs.Services
             _constring = constring;
             Configuration = configuration;
         }
+        public async Task<int> CountTeta()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountTeta", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
 
         public async Task<List<prenatal>> Teta1()
         {

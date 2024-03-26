@@ -201,6 +201,6 @@ else
         var options = new DialogOptions { MaxWidth = MaxWidth.ExtraSmall };
         parameters.Add("xpre", update);
         parameters.Add("xinfo", _child);
-        var dialog = await Dialog.Show<UpdatePreStatus>("Mark as done?", parameters,options).Result;
+        var dialog = await Dialog.Show<UpdatePreStatus>("Mark as Done?", parameters,options).Result;
     }
 }

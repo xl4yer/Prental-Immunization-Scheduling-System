@@ -1,3 +1,315 @@
 ﻿@page "/dashboard"
+@using Bhcirs.Models
+@inject NavigationManager Nav
+@using System.Net.Http.Headers
+@inject ILocalStorageService localStorage
+@inject ISnackbar snackBar
 
-<h1>Dashboard</h1>
+<br />
+<br />
+<MudGrid Class="mb-3">
+    <MudItem xs="6" sm="6" md="6">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25" Style="background-color:#6147DB; color:white">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Style="font-size:3rem;" Icon="@Icons.Material.Outlined.PregnantWoman" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countInfo</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Total Registered for Prenatal</MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6" sm="6" md="6">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25" Style="background-color:#F39C12; color:white">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Style="font-size:3rem;" Icon="@Icons.Material.Outlined.ChildCare" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countChild</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Total Registered for Immunization</MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<br />
+
+<MudGrid Class="mb-3">
+    <MudItem xs="4" sm="6" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countTeta</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(Tetanus)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6" sm="4" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countPenta</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(Penta)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6" sm="4" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countBCG</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(BCG)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<br
+<MudGrid Class="mb-3">
+    <MudItem xs="4" sm="6" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countBOPV</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(bOPV)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6" sm="4" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countIPV</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(IPV)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6" sm="4" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countMMR</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(MMR)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<br
+<MudGrid Class="mb-3">
+    <MudItem xs="4" sm="6" md="4">
+        <MudPaper Class="pa-4 rounded-lg" Elevation="25">
+            <MudGrid>
+                <MudItem>
+                    <MudIcon Color="Color.Info" Style="font-size:3rem;" Icon="@Icons.Material.Outlined.Vaccines" />
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>@countPCV13</b></MudText>
+                    <MudText Typo="Typo.subtitle1">Scheduled for next month</MudText>
+                    <MudText Typo="Typo.body1"><b>(PCV13)</b></MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    public int countChild { get; set; } = 0;
+    public int countInfo { get; set; } = 0;
+    public int countTeta { get; set; } = 0;
+    public int countPenta { get; set; } = 0;
+    public int countBOPV { get; set; } = 0;
+    public int countBCG { get; set; } = 0;
+    public int countIPV { get; set; } = 0;
+    public int countMMR { get; set; } = 0;
+    public int countPCV13 { get; set; } = 0;
+
+    public async Task totalInfo()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Info/CountInfo");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countInfo = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalChild()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Child/CountChild");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countChild = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalTeta()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Prenatal/CountTeta");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countTeta = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalPenta()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Immunization/CountPenta");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countPenta = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalBOPV()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Immunization/CountBOPV");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countBOPV = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalBCG()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Immunization/CountBCG");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countBCG = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+    public async Task totalIPV()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Immunization/CountIPV");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countIPV = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalMMR()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Immunization/CountMMR");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countMMR = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public async Task totalPCV13()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"{Nav.BaseUri}");
+            HttpResponseMessage response = await client.GetAsync($"api/Immunization/CountPCV13");
+            if (response.IsSuccessStatusCode)
+            {
+                string contentResponse = await response.Content.ReadAsStringAsync();
+                countPCV13 = JsonConvert.DeserializeObject<int>(contentResponse);
+                StateHasChanged();
+            }
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await totalInfo();
+        await totalChild();
+        await totalTeta();
+        await totalPenta();
+        await totalBOPV();
+        await totalBCG();
+        await totalIPV();
+        await totalMMR();
+        await totalPCV13();
+    }
+
+
+}

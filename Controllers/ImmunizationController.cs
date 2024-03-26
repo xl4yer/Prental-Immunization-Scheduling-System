@@ -235,5 +235,42 @@ namespace Bhcirs.Controllers
             var ret = await xservices.SearchMMR2(search);
             return ret;
         }
+
+        [HttpGet]
+        public async Task<int> CountPenta()
+        {
+            return await xservices.CountPenta();
+        }
+
+
+        [HttpGet]
+        public async Task<int> CountBOPV()
+        {
+            return await xservices.CountBOPV();
+        }
+
+        [HttpGet]
+        public async Task<int> CountBCG()
+        {
+            return await xservices.CountBCG();
+        }
+
+        [HttpGet]
+        public async Task<int> CountIPV()
+        {
+            return await xservices.CountIPV();
+        }
+
+        [HttpGet]
+        public async Task<int> CountMMR()
+        {
+            return await xservices.CountMMR();
+        }
+
+        [HttpGet]
+        public async Task<int> CountPCV13()
+        {
+            return await xservices.CountPCV13();
+        }
     }
 }

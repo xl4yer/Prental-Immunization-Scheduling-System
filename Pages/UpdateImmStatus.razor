@@ -6,6 +6,7 @@
 @inject ILocalStorageService localStorage
 @inject IJSRuntime jsRuntime
 @inject ISnackbar snackBar
+@inject HttpClient http
 
 <MudDialog DisableSidePadding="true">
     <DialogActions>
@@ -34,6 +35,32 @@
     private async Task Cancel()
     {
         MudDialog.Cancel();
+    }
+
+    public async Task PhilSms()
+    {
+        var url = "https://app.philsms.com/api/v3/sms/send";
+        var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
+        var request = new
+        {
+            recipient = $"63{xchild.contact}",
+            sender_id = "PhilSMS",
+            type = "plain",
+            message = $"{xchild.fullname}, your scheduled {ximm.vaccine} is on {ximm.date?.ToString("MMMM d, yyyy")}"
+        };
+
+        var json = JsonConvert.SerializeObject(request);
+        var content = new StringContent(json);
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await http.PostAsync(url, content);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Successfully Sent");
+        }
+        else
+        {
+            Console.WriteLine("Failed to Send");
+        }
     }
 
     private async Task Submit()
@@ -65,6 +92,7 @@
                 {
                     await InvokeAsync(async () =>
                     {
+                        // await PhilSms();
                         snackBar.Add($"Done: Confirmed!", Severity.Success);
                         MudDialog.Cancel();
                         StateHasChanged();

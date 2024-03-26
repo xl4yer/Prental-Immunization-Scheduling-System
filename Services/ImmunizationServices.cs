@@ -16,6 +16,83 @@ namespace Bhcirs.Services
             Configuration = configuration;
         }
 
+        public async Task<int> CountPenta()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountPenta", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
+
+        public async Task<int> CountBOPV()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountBOPV", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
+
+        public async Task<int> CountBCG()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountBCG", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
+
+        public async Task<int> CountIPV()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountIPV", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
+
+        public async Task<int> CountMMR()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountMMR", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
+
+        public async Task<int> CountPCV13()
+        {
+            using (var con = new MySqlConnection(_constring.GetConnection()))
+            {
+                await con.OpenAsync().ConfigureAwait(false);
+                var com = new MySqlCommand("CountPCV13", con)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+                return Convert.ToInt32(await com.ExecuteScalarAsync().ConfigureAwait(false));
+            }
+        }
 
         public async Task<List<immunization>> BCG()
         {

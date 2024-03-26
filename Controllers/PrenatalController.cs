@@ -97,5 +97,11 @@ namespace Bhcirs.Controllers
             var ret = await xservices.SearchTeta5(search);
             return ret;
         }
+
+        [HttpGet]
+        public async Task<int> CountTeta()
+        {
+            return await xservices.CountTeta();
+        }
     }
 }

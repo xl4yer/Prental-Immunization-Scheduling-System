@@ -35,7 +35,7 @@
             <MudTd DataLabel="Name">@context.fullname</MudTd>
                 <MudTd DataLabel="Age">@context.age</MudTd>
                 <MudTd DataLabel="Address">@context.address</MudTd>
-                <MudTd DataLabel="Contact">+63 @context.contact</MudTd>
+            <MudTd DataLabel="Contact">0<span>@context.contact</span></MudTd>
                 <MudTd>
                     <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
                         <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => EditInfo(context.infoID))" Size="Size.Small" />
