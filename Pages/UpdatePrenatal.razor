@@ -8,6 +8,8 @@
 @inject ISnackbar snackBar
 @inject HttpClient http
 
+<EditForm Model="@xpre" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
 <MudDialog DisableSidePadding="true">
     <DialogContent>
         <MudContainer Style="max-height: 500px; overflow-y: scroll">
@@ -16,7 +18,7 @@
             <p1>Scheduled Date</p1>
             <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="xpre.date" Placeholder="Select Date" /><br />
             <p1>Vaccine</p1>
-            <MudSelect @bind-Value="@xpre.vaccine" Margin="Margin.Dense" Label="Select Vaccine" T="string" Variant="Variant.Outlined">
+                <MudSelect @bind-Value="@xpre.vaccine" For="@(() => xpre.vaccine)" Margin="Margin.Dense" Label="Select Vaccine" T="string" Variant="Variant.Outlined">
                 <MudSelectItem Value="@("Tetanus 1st Dose")" />
                 <MudSelectItem Value="@("Tetanus 2nd Dose")" />
             </MudSelect><br />
@@ -27,6 +29,7 @@
         <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Submit</MudButton>
     </DialogActions>
 </MudDialog>
+</EditForm>
 
 @code {
     private string text { get; set; } = "";
@@ -44,7 +47,10 @@
         var xinfo = await httpClient.GetFromJsonAsync<List<info>>($"api/Info/SearchInfo?search={value}");
         return xinfo;
     }
-
+    public void OnValidSubmit(EditContext context)
+    {
+        
+    }
     private async Task Cancel()
     {
         MudDialog.Cancel();

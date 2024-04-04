@@ -7,6 +7,8 @@
 @inject IJSRuntime jsRuntime
 @inject ISnackbar snackBar
 
+<EditForm Model="@ximm" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
 <MudDialog DisableSidePadding="true">
     <DialogContent>
         <MudContainer Style="max-height: 500px; overflow-y: scroll">
@@ -15,7 +17,7 @@
             <p1>Scheduled Date</p1>
             <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="ximm.date" Placeholder="Select Date" /><br />
             <p1>Vaccine</p1>
-            <MudSelect @bind-Value="@ximm.vaccine" Margin="Margin.Dense" Label="Select Vaccine" T="string" Variant="Variant.Outlined">
+                <MudSelect @bind-Value="@ximm.vaccine" For="@(() => ximm.vaccine)" Margin="Margin.Dense" Label="Select Vaccine" T="string" Variant="Variant.Outlined">
                 <MudSelectItem Value="@("BCG")" />
                 <MudSelectItem Value="@("Penta 1st Dose")" />
                 <MudSelectItem Value="@("Penta 2nd Dose")" />
@@ -39,6 +41,7 @@
         <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Submit</MudButton>
     </DialogActions>
 </MudDialog>
+</EditForm>
 
 @code {
     private string text { get; set; } = "";
@@ -55,6 +58,11 @@
         await localStorage.GetItemAsStringAsync("token"));
         var xchild = await httpClient.GetFromJsonAsync<List<child>>($"api/Child/SearchChild?search={value}");
         return xchild;
+    }
+
+    public void OnValidSubmit(EditContext context)
+    {
+        
     }
 
     private async Task Cancel()

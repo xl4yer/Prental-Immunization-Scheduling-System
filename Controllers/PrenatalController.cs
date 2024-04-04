@@ -1,5 +1,6 @@
 ﻿using Bhcirs.Models;
 using Bhcirs.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bhcirs.Controllers
@@ -16,19 +17,22 @@ namespace Bhcirs.Controllers
 		}
 
 		[HttpGet]
-		public async Task<List<prenatal>> Teta1()
+        [Authorize]
+        public async Task<List<prenatal>> Teta1()
 		{
 			var ret = await xservices.Teta1();
 			return ret;
 		}
 
         [HttpGet]
+        [Authorize]
         public async Task<List<prenatal>> Teta2()
         {
             var ret = await xservices.Teta2();
             return ret;
         }
         [HttpGet]
+        [Authorize]
         public async Task<List<prenatal>> Teta3()
         {
             var ret = await xservices.Teta3();
@@ -36,6 +40,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<prenatal>> Teta4()
         {
             var ret = await xservices.Teta4();
@@ -43,6 +48,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<prenatal>> Teta5()
         {
             var ret = await xservices.Teta5();
@@ -50,6 +56,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpPost]
+
         public async Task<int> AddPrenatal([FromBody] prenatal xpre)
         {
             var ret = await xservices.AddPrenatal(xpre);

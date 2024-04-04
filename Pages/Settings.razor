@@ -6,6 +6,8 @@
 @inject NavigationManager Nav
 
 <br />
+<EditForm Model="@xuser" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
 <MudCard Elevation="25">
     <MudCardContent>
         <MudToolBar>
@@ -27,6 +29,7 @@
         </MudToolBar>
     </MudCardContent>
 </MudCard>
+</EditForm>
 
 @code {
     [Parameter] public users xuser { get; set; } = new users();
@@ -39,6 +42,11 @@
 
     public string xuserID = "";
     public string xName = "";
+
+    private void OnValidSubmit(EditContext context)
+    {
+
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -76,7 +84,11 @@
     {
         if (xuser.password != password2)
         {
-            snackBar.Add($"Error: Password Does Not Match", Severity.Warning);
+            snackBar.Add($"Error: Password Does Not Match!", Severity.Warning);
+        }
+        else if (string.IsNullOrEmpty(xuser.password))
+        {
+            snackBar.Add($"Fill the required fields!", Severity.Warning);
         }
         else
         {

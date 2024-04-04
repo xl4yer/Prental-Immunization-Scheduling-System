@@ -55,7 +55,7 @@ namespace Bhcirs.Services
             using (var con = new MySqlConnection(_constring.GetConnection()))
             {
                 await con.OpenAsync().ConfigureAwait(false);
-                var com = new MySqlCommand("userlogin", con)
+                var com = new MySqlCommand("UserLogin", con)
                 {
                     CommandType = CommandType.StoredProcedure,
                 };

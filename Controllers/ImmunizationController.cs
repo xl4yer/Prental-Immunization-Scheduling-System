@@ -1,5 +1,6 @@
 ﻿using Bhcirs.Models;
 using Bhcirs.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bhcirs.Controllers
@@ -16,6 +17,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> BCG()
         {
             var ret = await xservices.BCG();
@@ -24,6 +26,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> IPV1()
         {
             var ret = await xservices.IPV1();
@@ -32,6 +35,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> IPV2()
         {
             var ret = await xservices.IPV2();
@@ -40,6 +44,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> MMR1()
         {
             var ret = await xservices.MMR1();
@@ -48,6 +53,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> MMR2()
         {
             var ret = await xservices.MMR2();
@@ -56,6 +62,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> PCV131()
         {
             var ret = await xservices.PCV131();
@@ -64,6 +71,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> PCV132()
         {
             var ret = await xservices.PCV132();
@@ -72,6 +80,7 @@ namespace Bhcirs.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> PCV133()
         {
             var ret = await xservices.PCV133();
@@ -79,6 +88,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> BOPV1()
         {
             var ret = await xservices.BOPV1();
@@ -86,6 +96,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> BOPV2()
         {
             var ret = await xservices.BOPV2();
@@ -93,6 +104,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> BOPV3()
         {
             var ret = await xservices.BOPV3();
@@ -100,6 +112,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> Penta1()
         {
             var ret = await xservices.Penta1();
@@ -107,6 +120,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> Penta2()
         {
             var ret = await xservices.Penta2();
@@ -114,6 +128,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<immunization>> Penta3()
         {
             var ret = await xservices.Penta3();

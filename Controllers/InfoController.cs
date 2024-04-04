@@ -1,5 +1,6 @@
 ﻿using Bhcirs.Models;
 using Bhcirs.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bhcirs.Controllers
@@ -16,6 +17,7 @@ namespace Bhcirs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<info>> Info()
         {
             var ret = await xservices.Info();

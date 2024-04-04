@@ -1,11 +1,15 @@
-﻿namespace Bhcirs.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Bhcirs.Models
 {
     public class child
     {
         public string childID { get; set; } = "";
         public string infoID { get; set; } = "";
+        [Required]
         public string fname { get; set; } = "";
         public string mname { get; set; } = "";
+        [Required]
         public string lname { get; set; } = "";
         public DateTime? bdate { get; set; } = DateTime.Now;
         public string feeding { get; set; } = "";

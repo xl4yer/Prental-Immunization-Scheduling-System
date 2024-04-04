@@ -10,18 +10,19 @@
 @inject HttpClient http
 
 <PageTitle>Add Prenatal</PageTitle>
-
+<EditForm Model="@xpre" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
 <MudCard Style="height:600px">
 <MudToolBar>
     <h5>Add Prenatal Schedule</h5>
 </MudToolBar>
 <MudContainer Style="max-height: 500px; overflow-y: scroll">
     <p1>Name</p1>
-    <MudAutocomplete Clearable T="info" Placeholder="Search Patient Name" @bind-Value="xinfo" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
+            <MudAutocomplete Clearable T="info" Placeholder="Search Patient Name" @bind-Value="xinfo" For="@(() => xinfo)" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
     <p1>Scheduled Date</p1>
-    <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="sched" Placeholder="Select Date" /><br />
+    <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="xpre.date" Placeholder="Select Date" /><br />
     <p1>Vaccine</p1>
-    <MudSelect @bind-Value="@xpre.vaccine" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
+            <MudSelect @bind-Value="@xpre.vaccine" For="@(() => xpre.vaccine)" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
         <MudSelectItem Value="@("Tetanus 1st Dose")" />
         <MudSelectItem Value="@("Tetanus 2nd Dose")" />
             <MudSelectItem Value="@("Tetanus 3rd Dose")" />
@@ -35,12 +36,18 @@
     </MudToolBar>
 </MudContainer>
 </MudCard>
+</EditForm>
 
 @code {
     private string text { get; set; } = "";
-    DateTime? sched = DateTime.Today;
+    // DateTime? sched = DateTime.Today;
     [Parameter] public prenatal xpre { get; set; } = new prenatal();
     [Parameter] public info xinfo { get; set; } = new info();
+
+    public void OnValidSubmit(EditContext context)
+    {
+        
+    }
 
     private async Task<IEnumerable<info>> Search(string value)
     {
@@ -80,47 +87,56 @@
 
     private async Task Submit()
     {
-        int i = 0;
-        var xpresched = new prenatal
-            {
-                prenatalID = Guid.NewGuid().ToString(),
-                vaccine = xpre.vaccine,
-                infoID = xinfo.infoID,
-                date = sched.Value,
-                status = "Scheduled"
-            };
-
-        using (HttpClient client = new HttpClient())
+        if (string.IsNullOrEmpty(xinfo.infoID) ||
+            string.IsNullOrEmpty(xpre.vaccine))
         {
-            client.BaseAddress = new Uri($"{Nav.BaseUri}");
-            var json = JsonConvert.SerializeObject(xpresched);
-            HttpContent content = new StringContent(json);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-            await localStorage.GetItemAsStringAsync("token"));
-            HttpResponseMessage response = await client.PostAsync($"api/Prenatal/AddPrenatal", content);
-            if (response.IsSuccessStatusCode)
-            {
-                string contentresponse = await response.Content.ReadAsStringAsync();
-                i = JsonConvert.DeserializeObject<int>(contentresponse);
-                if (i > 0)
+            snackBar.Add($"Provide the required fields!", Severity.Warning);
+        }
+        else
+        {
+            int i = 0;
+            var xpresched = new prenatal
                 {
-                    await InvokeAsync(async () =>
+                    prenatalID = Guid.NewGuid().ToString(),
+                    vaccine = xpre.vaccine,
+                    infoID = xinfo.infoID,
+                    date = xpre.date,
+                    status = "Scheduled"
+                };
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"{Nav.BaseUri}");
+                var json = JsonConvert.SerializeObject(xpresched);
+                HttpContent content = new StringContent(json);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                await localStorage.GetItemAsStringAsync("token"));
+                HttpResponseMessage response = await client.PostAsync($"api/Prenatal/AddPrenatal", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string contentresponse = await response.Content.ReadAsStringAsync();
+                    i = JsonConvert.DeserializeObject<int>(contentresponse);
+                    if (i > 0)
                     {
-                        // await PhilSms();
-                        snackBar.Add($"Done: Successfully Saved!", Severity.Success);
+                        await InvokeAsync(async () =>
+                        {
+                            // await PhilSms();
+                            snackBar.Add($"Done: Successfully Saved!", Severity.Success);
+                            StateHasChanged();
+                        });
+                    }
+                }
+                else
+                {
+                    await InvokeAsync(() =>
+                    {
+                        snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
                         StateHasChanged();
                     });
                 }
             }
-            else
-            {
-                await InvokeAsync(() =>
-                {
-                    snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
-                    StateHasChanged();
-                });
-            }
         }
+       
     }
 }

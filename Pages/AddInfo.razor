@@ -7,34 +7,37 @@
 @inject IJSRuntime jsRuntime
 @inject ISnackbar snackBar
 
-<MudDialog DisableSidePadding="true">
-    <DialogContent>
-        <MudContainer Style="max-height: 500px; overflow-y: scroll">
-            <p1>First Name</p1>
-            <MudTextField Clearable @bind-Value="@xinfo.fname" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-             <p1>Middle Name</p1>
-             <MudTextField Clearable @bind-Value="@xinfo.mname" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-             <p1>Last Name</p1>
-             <MudTextField Clearable @bind-Value="@xinfo.lname" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-             <p1>Birthdate</p1>
-             <MudDatePicker  Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="birthdate" Placeholder="Select Date" /><br />
-             <p1>Contact</p1>
-            <MudTextField Clearable @bind-Value="@xinfo.contact" Adornment="Adornment.Start" AdornmentText="+63" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-             <p1>Address</p1>
-             <MudTextField Clearable @bind-Value="@xinfo.address" T="string" Lines="3" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-             <p1>Husband Name</p1>
-             <MudTextField Clearable @bind-Value="@xinfo.hname" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-             <p1>Occupation</p1>
-             <MudTextField Clearable @bind-Value="@xinfo.occupation" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
-         </MudContainer>
-     </DialogContent>
-     <DialogActions>
-         <MudButton OnClick="Cancel">Cancel</MudButton>
-         <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Submit</MudButton>
-     </DialogActions>
- </MudDialog>
+<EditForm Model="@xinfo" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudDialog DisableSidePadding="true">
+        <DialogContent>
+            <MudContainer Style="max-height: 500px; overflow-y: scroll">
+                <p1>First Name</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.fname" For="@(() => xinfo.fname)" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
+                <p1>Middle Name</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.mname" HelperText="Leave blank if not applicable" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
+                <p1>Last Name</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.lname" For="@(() => xinfo.lname)" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
+                <p1>Birthdate</p1>
+                <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="birthdate" Placeholder="Select Date" /><br />
+                <p1>Contact No.</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.contact" For="@(() => xinfo.contact)" Adornment="Adornment.Start" AdornmentText="+63" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
+                <p1>Address</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.address" For="@(() => xinfo.address)" T="string" Lines="3" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
+                <p1>Husband Name</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.hname" Variant="Variant.Outlined" HelperText="Leave blank if not applicable" Margin="Margin.Dense"></MudTextField><br />
+                <p1>Occupation</p1>
+                <MudTextField Clearable @bind-Value="@xinfo.occupation" HelperText="Leave blank if not applicable" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField><br />
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Submit</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
 
-    @code {
+@code {
     private string text { get; set; } = "";
     DateTime? birthdate = DateTime.Today;
     [Parameter] public info xinfo { get; set; } = new info();
@@ -45,54 +48,69 @@
         MudDialog.Cancel();
     }
 
+    public void OnValidSubmit(EditContext context)
+    {
+
+    }
+
     private async Task Submit()
     {
-        int i = 0;
-        var info = new info
-            {
-                infoID = Guid.NewGuid().ToString(),
-                fname = xinfo.fname,
-                mname = xinfo.mname,
-                lname = xinfo.lname,
-                bdate = birthdate.Value,
-                contact = xinfo.contact,
-                address = xinfo.address,
-                hname = xinfo.hname,
-                occupation = xinfo.occupation
-            };
-
-        using (HttpClient client = new HttpClient())
+        if (string.IsNullOrEmpty(xinfo.fname) ||
+        string.IsNullOrEmpty(xinfo.lname) ||
+         string.IsNullOrEmpty(xinfo.contact) ||
+         string.IsNullOrEmpty(xinfo.address))
         {
-            client.BaseAddress = new Uri($"{Nav.BaseUri}");
-            var json = JsonConvert.SerializeObject(info);
-            HttpContent content = new StringContent(json);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-            await localStorage.GetItemAsStringAsync("token"));
-            HttpResponseMessage response = await client.PostAsync($"api/Info/AddInfo", content);
-            if (response.IsSuccessStatusCode)
-            {
-                string contentresponse = await response.Content.ReadAsStringAsync();
-                i = JsonConvert.DeserializeObject<int>(contentresponse);
-                if (i > 0)
+            snackBar.Add($"Provide the required fields!", Severity.Warning);
+        }
+        else
+        {
+            int i = 0;
+            var info = new info
                 {
-                    await InvokeAsync(async () =>
+                    infoID = Guid.NewGuid().ToString(),
+                    fname = xinfo.fname,
+                    mname = xinfo.mname,
+                    lname = xinfo.lname,
+                    bdate = birthdate.Value,
+                    contact = xinfo.contact,
+                    address = xinfo.address,
+                    hname = xinfo.hname,
+                    occupation = xinfo.occupation
+                };
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"{Nav.BaseUri}");
+                var json = JsonConvert.SerializeObject(info);
+                HttpContent content = new StringContent(json);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                await localStorage.GetItemAsStringAsync("token"));
+                HttpResponseMessage response = await client.PostAsync($"api/Info/AddInfo", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string contentresponse = await response.Content.ReadAsStringAsync();
+                    i = JsonConvert.DeserializeObject<int>(contentresponse);
+                    if (i > 0)
                     {
-                        snackBar.Add($"Done: Successfully Saved!", Severity.Success);
-                        MudDialog.Cancel();
+                        await InvokeAsync(async () =>
+                        {
+                            snackBar.Add($"Done: Successfully Saved!", Severity.Success);
+                            MudDialog.Cancel();
+                            StateHasChanged();
+                        });
+                    }
+                }
+                else
+                {
+                    await InvokeAsync(() =>
+                    {
+                        snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
                         StateHasChanged();
                     });
                 }
             }
-            else
-            {
-                await InvokeAsync(() =>
-                {
-                    snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
-                    StateHasChanged();
-                });
-            }
         }
+       
     }
- }
- 
+}

@@ -10,45 +10,54 @@
 @inject HttpClient http
 
 <PageTitle>Add Immunization</PageTitle>
-<MudCard Style="height:600px">
-<MudToolBar>
-    <h5>Add Immunization Schedule</h5>
-</MudToolBar>
-<MudContainer Style="max-height: 500px; overflow-y: scroll">
-    <p1>Name</p1>
-        <MudAutocomplete Clearable T="child" Placeholder="Search Patient Name" @bind-Value="xchild" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
-    <p1>Scheduled Date</p1>
-    <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="sched" Placeholder="Select Date" /><br />
-    <p1>Vaccine</p1>
-    <MudSelect @bind-Value="@ximm.vaccine" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
-        <MudSelectItem Value="@("BCG")" />
-        <MudSelectItem Value="@("Penta 1st Dose")" />
-        <MudSelectItem Value="@("Penta 2nd Dose")" />
-         <MudSelectItem Value="@("Penta 3rd Dose")" />
-         <MudSelectItem Value="@("BOPV 1st Dose")" />
-         <MudSelectItem Value="@("BOPV 2nd Dose")" />
-         <MudSelectItem Value="@("BOPV 3rd Dose")" />
-        <MudSelectItem Value="@("IPV 1st Dose")" />
-        <MudSelectItem Value="@("IPV 2nd Dose")" />
-         <MudSelectItem Value="@("MMR 1st Dose")" />
-         <MudSelectItem Value="@("MMR 2nd Dose")" />
-         <MudSelectItem Value="@("PCV13 1st Dose")" />
-        <MudSelectItem Value="@("PCV13 2nd Dose")" />
-        <MudSelectItem Value="@("PCV13 3rd Dose")" />
-    </MudSelect><br />
-    <MudToolBar>
-        <MudSpacer />
-            <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Warning" @onclick="Clear">Clear</MudButton> &nbsp;
-        <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
-    </MudToolBar>
-</MudContainer>
-</MudCard>
+
+<EditForm Model="@ximm" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudCard Style="height:600px">
+        <MudToolBar>
+            <h5>Add Immunization Schedule</h5>
+        </MudToolBar>
+        <MudContainer Style="max-height: 500px; overflow-y: scroll">
+            <p1>Name</p1>
+            <MudAutocomplete Clearable T="child" Placeholder="Search Patient Name" @bind-Value="xchild" For="@(() => xchild)" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
+            <p1>Scheduled Date</p1>
+            <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="ximm.date" Placeholder="Select Date" /><br />
+            <p1>Vaccine</p1>
+            <MudSelect @bind-Value="@ximm.vaccine" For="@(() => ximm.vaccine)" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
+                <MudSelectItem Value="@("BCG")" />
+                <MudSelectItem Value="@("Penta 1st Dose")" />
+                <MudSelectItem Value="@("Penta 2nd Dose")" />
+                <MudSelectItem Value="@("Penta 3rd Dose")" />
+                <MudSelectItem Value="@("BOPV 1st Dose")" />
+                <MudSelectItem Value="@("BOPV 2nd Dose")" />
+                <MudSelectItem Value="@("BOPV 3rd Dose")" />
+                <MudSelectItem Value="@("IPV 1st Dose")" />
+                <MudSelectItem Value="@("IPV 2nd Dose")" />
+                <MudSelectItem Value="@("MMR 1st Dose")" />
+                <MudSelectItem Value="@("MMR 2nd Dose")" />
+                <MudSelectItem Value="@("PCV13 1st Dose")" />
+                <MudSelectItem Value="@("PCV13 2nd Dose")" />
+                <MudSelectItem Value="@("PCV13 3rd Dose")" />
+            </MudSelect><br />
+            <MudToolBar>
+                <MudSpacer />
+                <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Warning" @onclick="Clear">Clear</MudButton> &nbsp;
+                <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
+            </MudToolBar>
+        </MudContainer>
+    </MudCard>
+</EditForm>
 
 @code {
     private string text { get; set; } = "";
-    DateTime? sched = DateTime.Today;
+    // DateTime? sched = DateTime.Today;
     [Parameter] public immunization ximm { get; set; } = new immunization();
     [Parameter] public child xchild { get; set; } = new child();
+
+    private void OnValidSubmit(EditContext context)
+    {
+
+    }
 
     private async Task<IEnumerable<child>> Search(string value)
     {
@@ -59,12 +68,12 @@
         var xchild = await httpClient.GetFromJsonAsync<List<child>>($"api/Child/SearchChild?search={value}");
         return xchild;
     }
-     
+
     public async Task Clear()
     {
         xchild.fullname = string.Empty;
         ximm.vaccine = "";
-        sched = DateTime.Now;
+        ximm.date = DateTime.Now;
     }
 
     public async Task PhilSms()
@@ -95,47 +104,56 @@
 
     private async Task Submit()
     {
-        int i = 0;
-        var _imm = new immunization
-            {
-                immunizationID = Guid.NewGuid().ToString(),
-                vaccine = ximm.vaccine,
-                childID = xchild.childID,
-                date = sched.Value,
-                status = "Scheduled"
-            };
-
-        using (HttpClient client = new HttpClient())
+        if (string.IsNullOrEmpty(xchild.childID) ||
+        string.IsNullOrEmpty(ximm.vaccine))
         {
-            client.BaseAddress = new Uri($"{Nav.BaseUri}");
-            var json = JsonConvert.SerializeObject(_imm);
-            HttpContent content = new StringContent(json);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-            await localStorage.GetItemAsStringAsync("token"));
-            HttpResponseMessage response = await client.PostAsync($"api/Immunization/AddImmunization", content);
-            if (response.IsSuccessStatusCode)
-            {
-                string contentresponse = await response.Content.ReadAsStringAsync();
-                i = JsonConvert.DeserializeObject<int>(contentresponse);
-                if (i > 0)
+            snackBar.Add($"Provide the required fields!", Severity.Warning);
+        }
+        else
+        {
+            int i = 0;
+            var _imm = new immunization
                 {
-                    await InvokeAsync(async () =>
+                    immunizationID = Guid.NewGuid().ToString(),
+                    vaccine = ximm.vaccine,
+                    childID = xchild.childID,
+                    date = ximm.date,
+                    status = "Scheduled"
+                };
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"{Nav.BaseUri}");
+                var json = JsonConvert.SerializeObject(_imm);
+                HttpContent content = new StringContent(json);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                await localStorage.GetItemAsStringAsync("token"));
+                HttpResponseMessage response = await client.PostAsync($"api/Immunization/AddImmunization", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string contentresponse = await response.Content.ReadAsStringAsync();
+                    i = JsonConvert.DeserializeObject<int>(contentresponse);
+                    if (i > 0)
                     {
-                        // await PhilSms();
-                        snackBar.Add($"Done: Successfully Saved!", Severity.Success);
+                        await InvokeAsync(async () =>
+                        {
+                            // await PhilSms();
+                            snackBar.Add($"Done: Successfully Saved!", Severity.Success);
+                            StateHasChanged();
+                        });
+                    }
+                }
+                else
+                {
+                    await InvokeAsync(() =>
+                    {
+                        snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
                         StateHasChanged();
                     });
                 }
             }
-            else
-            {
-                await InvokeAsync(() =>
-                {
-                    snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
-                    StateHasChanged();
-                });
-            }
         }
+
     }
 }

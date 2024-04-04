@@ -28,6 +28,7 @@ builder.Services.AddScoped<MudThemeProvider>();
 builder.Services.AddHttpClient();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSweetAlert2();
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -75,10 +76,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("NewPolicy");
-app.UseAuthorization();
-app.UseAuthentication();
-app.MapControllers();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 app.Run();
