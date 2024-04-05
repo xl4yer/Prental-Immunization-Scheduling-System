@@ -17,7 +17,7 @@
             <p1>Scheduled Date</p1>
             <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="ximm.date" Placeholder="Select Date" /><br />
             <p1>Vaccine</p1>
-                <MudSelect @bind-Value="@ximm.vaccine" For="@(() => ximm.vaccine)" Margin="Margin.Dense" Label="Select Vaccine" T="string" Variant="Variant.Outlined">
+                <MudSelect @bind-Value="@ximm.vaccine" For="@(() => ximm.vaccine)" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
                 <MudSelectItem Value="@("BCG")" />
                 <MudSelectItem Value="@("Penta 1st Dose")" />
                 <MudSelectItem Value="@("Penta 2nd Dose")" />

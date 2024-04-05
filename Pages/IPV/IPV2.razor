@@ -19,16 +19,23 @@
     }
 </style>
 
-<MudToolBar>
-    <h5>IPV 2nd Dose</h5>
-</MudToolBar>
-
-<MudToolBar>
-    <MudButton Color="Color.Primary" Variant="Variant.Filled"  @onclick="(e => Refresh())">Refresh</MudButton>&nbsp;
-    <MudSpacer /> <MudSpacer />
-    <MudTextField @bind-Value="txtchild" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
-    </MudTextField>
-</MudToolBar>
+<MudGrid Class="mb-3">
+    <MudItem xs="12" sm="6" md="4" lg="3">
+        <MudToolBar>
+            <MudText Typo="Typo.body1" Style="text-transform:uppercase">IPV 2nd Dose</MudText>
+        </MudToolBar>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4" lg="3">
+        <MudToolBar Justify="Justify.End">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="(e => Refresh())">Refresh</MudButton>
+        </MudToolBar>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="4" lg="6">
+        <MudToolBar Justify="Justify.End">
+            <MudTextField @bind-Value="txtchild" Clearable TextChanged="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+        </MudToolBar>
+    </MudItem>
+</MudGrid>
 
 @if (immunizationList != null && immunizationList.Any())
 {

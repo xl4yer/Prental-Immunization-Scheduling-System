@@ -46,7 +46,7 @@
             recipient = $"63{xchild.contact}",
             sender_id = "PhilSMS",
             type = "plain",
-            message = $"{xchild.fullname}, your scheduled {ximm.vaccine} is on {ximm.date?.ToString("MMMM d, yyyy")}"
+            message = $"Congratulations, {xchild.fullname}! You have received the {ximm.vaccine} on {DateTime.Now.ToString("MMMM dd, yyyy")}"
         };
 
         var json = JsonConvert.SerializeObject(request);

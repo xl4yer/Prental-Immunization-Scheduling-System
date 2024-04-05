@@ -7,21 +7,26 @@
 
 <PageTitle>Prenatal Record</PageTitle>
 
-<MudToolBar>
-    <MudText Typo="Typo.h6">Prenatal Information</MudText>
-</MudToolBar>
+<MudGrid Class="mb-3">
+    <MudItem xs="12" sm="6" md="4" lg="3">
+        <MudToolBar>
+            <MudText Typo="Typo.body1" Style="text-transform:uppercase">Prenatal Information</MudText>
+        </MudToolBar>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4" lg="3">
+        <MudToolBar Justify="Justify.End">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="(e => RefreshInfo())">Refresh</MudButton>&nbsp;
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" @onclick="(e => AddInfo())">Add</MudButton>
+        </MudToolBar>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="4" lg="6">
+        <MudToolBar Justify="Justify.End">
+            <MudTextField @bind-Value="txtinfo" Clearable TextChanged="SearchInfo" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+        </MudToolBar>
+    </MudItem>
+</MudGrid>
 
-<MudToolBar>
-    <MudButton Color="Color.Primary" Variant="Variant.Filled"  @onclick="(e => RefreshInfo())">Refresh</MudButton>&nbsp;
-    <MudButton Color="Color.Tertiary" Variant="Variant.Filled"  @onclick="(e => AddInfo())">Add</MudButton>
-</MudToolBar>
-
-<MudToolBar>
-    <MudSpacer /> <MudSpacer />
-    <MudTextField @bind-Value="txtinfo" Clearable TextChanged="SearchInfo" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Tertiary" Label="Search" Variant="Variant.Outlined" Margin="Margin.Dense">
-     </MudTextField>
- </MudToolBar>
- @if (infoList != null && infoList.Any())
+@if (infoList != null && infoList.Any())
 {
     <MudTable Class="ma-5" Dense="true" Hover="true" Items="@infoList" HorizontalScrollbar="true" FixedHeader="@fixed_header" FixedFooter="@fixed_footer" Height="@(fixed_header || fixed_footer ? "500px" : "")">
         <HeaderContent>
@@ -33,16 +38,16 @@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.fullname</MudTd>
-                <MudTd DataLabel="Age">@context.age</MudTd>
-                <MudTd DataLabel="Address">@context.address</MudTd>
+            <MudTd DataLabel="Age">@context.age</MudTd>
+            <MudTd DataLabel="Address">@context.address</MudTd>
             <MudTd DataLabel="Contact">0<span>@context.contact</span></MudTd>
-                <MudTd>
-                    <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
-                        <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => EditInfo(context.infoID))" Size="Size.Small" />
-                    </MudTooltip>
-                </MudTd>
-            </RowTemplate>
-        </MudTable>
+            <MudTd>
+                <MudTooltip Text="Edit information" Arrow="true" Placement="Placement.Right">
+                    <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Edit" @onclick="(e => EditInfo(context.infoID))" Size="Size.Small" />
+                </MudTooltip>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 }
 else
 {

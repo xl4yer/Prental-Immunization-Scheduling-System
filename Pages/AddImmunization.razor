@@ -15,29 +15,19 @@
     <DataAnnotationsValidator />
     <MudCard Style="height:600px">
         <MudToolBar>
-            <h5>Add Immunization Schedule</h5>
+            <MudText Typo="Typo.body1" Style="text-transform:uppercase">Add Immunization Schedule</MudText>
         </MudToolBar>
         <MudContainer Style="max-height: 500px; overflow-y: scroll">
             <p1>Name</p1>
-            <MudAutocomplete Clearable T="child" Placeholder="Search Patient Name" @bind-Value="xchild" For="@(() => xchild)" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
+            <MudAutocomplete Clearable T="child" Placeholder="Search Patient Name" @bind-Value="xchild" For="@(() => xchild)" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false" /><br />
             <p1>Scheduled Date</p1>
             <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="ximm.date" Placeholder="Select Date" /><br />
             <p1>Vaccine</p1>
             <MudSelect @bind-Value="@ximm.vaccine" For="@(() => ximm.vaccine)" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
-                <MudSelectItem Value="@("BCG")" />
-                <MudSelectItem Value="@("Penta 1st Dose")" />
-                <MudSelectItem Value="@("Penta 2nd Dose")" />
-                <MudSelectItem Value="@("Penta 3rd Dose")" />
-                <MudSelectItem Value="@("BOPV 1st Dose")" />
-                <MudSelectItem Value="@("BOPV 2nd Dose")" />
-                <MudSelectItem Value="@("BOPV 3rd Dose")" />
-                <MudSelectItem Value="@("IPV 1st Dose")" />
-                <MudSelectItem Value="@("IPV 2nd Dose")" />
-                <MudSelectItem Value="@("MMR 1st Dose")" />
-                <MudSelectItem Value="@("MMR 2nd Dose")" />
-                <MudSelectItem Value="@("PCV13 1st Dose")" />
-                <MudSelectItem Value="@("PCV13 2nd Dose")" />
-                <MudSelectItem Value="@("PCV13 3rd Dose")" />
+                @foreach (var vaccine in vaccines)
+                {
+                    <MudSelectItem Value="@vaccine" />
+                }
             </MudSelect><br />
             <MudToolBar>
                 <MudSpacer />
@@ -50,9 +40,26 @@
 
 @code {
     private string text { get; set; } = "";
-    // DateTime? sched = DateTime.Today;
     [Parameter] public immunization ximm { get; set; } = new immunization();
     [Parameter] public child xchild { get; set; } = new child();
+
+    private List<string> vaccines = new List<string>
+    {
+        "BCG",
+        "Penta 1st Dose",
+        "Penta 2nd Dose",
+        "Penta 3rd Dose",
+        "BOPV 1st Dose",
+        "BOPV 2nd Dose",
+        "BOPV 3rd Dose",
+        "IPV 1st Dose",
+        "IPV 2nd Dose",
+        "MMR 1st Dose",
+        "MMR 2nd Dose",
+        "PCV13 1st Dose",
+        "PCV13 2nd Dose",
+        "PCV13 3rd Dose"
+    };
 
     private void OnValidSubmit(EditContext context)
     {
@@ -85,7 +92,7 @@
             recipient = $"63{xchild.contact}",
             sender_id = "PhilSMS",
             type = "plain",
-            message = $"{xchild.fullname}, your scheduled {ximm.vaccine} is on {ximm.date?.ToString("MMMM d, yyyy")}"
+            message = $"Good day! {xchild.fullname}, your scheduled {ximm.vaccine} is on {ximm.date?.ToString("MMMM d, yyyy")}"
         };
 
         var json = JsonConvert.SerializeObject(request);

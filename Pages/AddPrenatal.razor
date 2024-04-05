@@ -10,43 +10,51 @@
 @inject HttpClient http
 
 <PageTitle>Add Prenatal</PageTitle>
+
 <EditForm Model="@xpre" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
-<MudCard Style="height:600px">
-<MudToolBar>
-    <h5>Add Prenatal Schedule</h5>
-</MudToolBar>
-<MudContainer Style="max-height: 500px; overflow-y: scroll">
-    <p1>Name</p1>
-            <MudAutocomplete Clearable T="info" Placeholder="Search Patient Name" @bind-Value="xinfo" For="@(() => xinfo)" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false"></MudAutocomplete><br />
-    <p1>Scheduled Date</p1>
-    <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="xpre.date" Placeholder="Select Date" /><br />
-    <p1>Vaccine</p1>
+    <MudCard Style="height:600px">
+        <MudToolBar>
+            <MudText Typo="Typo.body1" Style="text-transform:uppercase">Add Prenatal Schedule</MudText>
+        </MudToolBar>
+        <MudContainer Style="max-height: 500px; overflow-y: scroll">
+            <p1>Name</p1>
+            <MudAutocomplete Clearable T="info" Placeholder="Search Patient Name" @bind-Value="xinfo" For="@(() => xinfo)" Variant="Variant.Outlined" Margin="Margin.Dense" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e.fullname}")" Strict="false" /><br />
+            <p1>Scheduled Date</p1>
+            <MudDatePicker Editable="true" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="xpre.date" Placeholder="Select Date" /><br />
+            <p1>Vaccine</p1>
             <MudSelect @bind-Value="@xpre.vaccine" For="@(() => xpre.vaccine)" Margin="Margin.Dense" Placeholder="Select Vaccine" T="string" Variant="Variant.Outlined">
-        <MudSelectItem Value="@("Tetanus 1st Dose")" />
-        <MudSelectItem Value="@("Tetanus 2nd Dose")" />
-            <MudSelectItem Value="@("Tetanus 3rd Dose")" />
-             <MudSelectItem Value="@("Tetanus 4th Dose")" />
-            <MudSelectItem Value="@("Tetanus 5th Dose")" />
-    </MudSelect><br />
-    <MudToolBar>
-        <MudSpacer/>
-            <MudButton Variant="Variant.Filled" Color="Color.Warning">Clear</MudButton> &nbsp;
-        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
-    </MudToolBar>
-</MudContainer>
-</MudCard>
+                @foreach (var vaccine in vaccines)
+                {
+                    <MudSelectItem Value="@vaccine" />
+                }
+            </MudSelect> <br />
+            <MudToolBar>
+                <MudSpacer />
+                <MudButton Variant="Variant.Filled" Color="Color.Warning">Clear</MudButton> &nbsp;
+                <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
+            </MudToolBar>
+        </MudContainer>
+    </MudCard>
 </EditForm>
 
 @code {
     private string text { get; set; } = "";
-    // DateTime? sched = DateTime.Today;
     [Parameter] public prenatal xpre { get; set; } = new prenatal();
     [Parameter] public info xinfo { get; set; } = new info();
 
+    private List<string> vaccines = new List<string>
+    {
+        "Tetanus 1st Dose",
+        "Tetanus 2nd Dose",
+        "Tetanus 3rd Dose",
+        "Tetanus 4th Dose",
+        "Tetanus 5th Dose"
+    };
+
     public void OnValidSubmit(EditContext context)
     {
-        
+
     }
 
     private async Task<IEnumerable<info>> Search(string value)
@@ -68,7 +76,7 @@
             recipient = $"63{xinfo.contact}",
             sender_id = "PhilSMS",
             type = "plain",
-            message = $"{xinfo.fullname}, your scheduled {xpre.vaccine} is on {xpre.date?.ToString("MMMM d, yyyy")}"
+            message = $"Good day! {xinfo.fullname}, your scheduled {xpre.vaccine} is on {xpre.date?.ToString("MMMM d, yyyy")}"
         };
 
         var json = JsonConvert.SerializeObject(request);
@@ -137,6 +145,6 @@
                 }
             }
         }
-       
+
     }
 }
