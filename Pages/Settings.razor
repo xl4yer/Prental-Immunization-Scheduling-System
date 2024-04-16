@@ -6,30 +6,44 @@
 @inject NavigationManager Nav
 
 <br />
-<EditForm Model="@xuser" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
-<MudCard Elevation="25">
-    <MudCardContent>
-        <MudToolBar>
-                <MudText Typo="Typo.body1" Style="text-transform:uppercase">Update Password</MudText>
-        </MudToolBar>
-        @if (hide)
-        {
-            <MudTextField @bind-Value="@xuserID" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
-        }
-        <p1>*New Password</p1>
-        <MudTextField @bind-Value="@xuser.password" For="@(() => xuser.password)" Margin="Margin.Dense" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="Click" AdornmentAriaLabel="Show Password" />
-        <br />
-        <p1>*Confirm Password</p1>
-        <MudTextField @bind-Value="@password2" For="@(() => password2)" Margin="Margin.Dense" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="Click" AdornmentAriaLabel="Show Password" />
-        <br />
-        <MudToolBar>
-            <MudSpacer /> <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Clear">Clear</MudButton> &nbsp;
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="Update">Update Password</MudButton>
-        </MudToolBar>
-    </MudCardContent>
-</MudCard>
-</EditForm>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-sm-2">
+     
+    </div>
+    <div class="col-sm-8">
+            <EditForm Model="@xuser" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
+                <MudCard Elevation="25">
+                    <MudCardContent>
+                        <MudToolBar>
+                            <MudText Typo="Typo.body1" Style="text-transform:uppercase">Update Password</MudText>
+                        </MudToolBar>
+                        @if (hide)
+                        {
+                            <MudTextField @bind-Value="@xuserID" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
+                        }
+                        <p1>*New Password</p1>
+                        <MudTextField @bind-Value="@xuser.password" For="@(() => xuser.password)" Margin="Margin.Dense" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="Click" AdornmentAriaLabel="Show Password" />
+                        <br />
+                        <p1>*Confirm Password</p1>
+                        <MudTextField @bind-Value="@password2" For="@(() => password2)" Margin="Margin.Dense" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="Click" AdornmentAriaLabel="Show Password" />
+                        <br />
+                        <MudToolBar>
+                            <MudSpacer /> <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Clear">Clear</MudButton> &nbsp;
+                            <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="Update">Update Password</MudButton>
+                        </MudToolBar>
+                    </MudCardContent>
+                </MudCard>
+            </EditForm>
+    </div>
+    <div class="col-sm-2">
+      
+    </div>
+  </div>
+</div>
+
+
 
 @code {
     [Parameter] public users xuser { get; set; } = new users();

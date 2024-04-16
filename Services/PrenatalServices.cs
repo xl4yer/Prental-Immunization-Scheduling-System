@@ -51,6 +51,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -93,6 +94,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -132,7 +134,9 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
+
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
                 }
@@ -175,6 +179,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -214,6 +219,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -256,6 +262,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -295,6 +302,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -337,6 +345,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -378,6 +387,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);
@@ -420,6 +430,7 @@ namespace Bhcirs.Services
                             vaccine = rdr["vaccine"].ToString(),
                             fullname = rdr["fullname"].ToString(),
                             status = rdr["status"].ToString(),
+                            contact = rdr["contact"].ToString(),
                         });
                     }
                     await rdr.CloseAsync().ConfigureAwait(false);

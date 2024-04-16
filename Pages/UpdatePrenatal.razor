@@ -10,7 +10,13 @@
 
 <EditForm Model="@xpre" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
-<MudDialog DisableSidePadding="true">
+    <MudDialog TitleClass="mud-primary" DisableSidePadding="true">
+        <TitleContent>
+            <MudText Typo="Typo.h6" Style="color:white">
+                <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                Update Prenatal
+            </MudText>
+        </TitleContent>
     <DialogContent>
         <MudContainer Style="max-height: 500px; overflow-y: scroll">
             <p1>Name</p1>
@@ -59,7 +65,7 @@
     public async Task PhilSms()
     {
         var url = "https://app.philsms.com/api/v3/sms/send";
-        var accessToken = "50|dI2Ca1vcWUUv5EfS5h5b2ro4Er0RgZAhaLYMOJMv";
+        var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
         var request = new
         {
             recipient = $"63{xinfo.contact}",

@@ -12,5 +12,6 @@ namespace Bhcirs.Models
         public string vaccine { get; set; } = "";
         public string fullname { get; set; } = "";
         public string status { get; set; } = "";
+        public string contact { get; set; } = "";
     }
 }

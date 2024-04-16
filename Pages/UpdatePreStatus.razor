@@ -8,7 +8,13 @@
 @inject ISnackbar snackBar
 @inject HttpClient http
 
-<MudDialog DisableSidePadding="true">
+<MudDialog TitleClass="mud-primary" DisableSidePadding="true">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Style="color:white">
+            <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3 mb-n1" />
+           Mark As Done?
+        </MudText>
+    </TitleContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Confirm</MudButton>
@@ -38,27 +44,55 @@
     }
     public async Task PhilSms()
     {
-        var url = "https://app.philsms.com/api/v3/sms/send";
-        var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
-        var request = new
+       if (xpre.vaccine == "Tetanus 5th Dose")
         {
-            recipient = $"63{xinfo.contact}",
-            sender_id = "PhilSMS",
-            type = "plain",
-            message = $"Congratulations, {xinfo.fullname}! You have received the {xpre.vaccine} on {DateTime.Now.ToString("MMMM dd, yyyy")}"
-        };
+            var url = "https://app.philsms.com/api/v3/sms/send";
+            var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
+            var request = new
+            {
+                recipient = $"63{xpre.contact}",
+                sender_id = "PhilSMS",
+                type = "plain",
+                message = $"Congratulations, {xinfo.fullname}! You have completed the Tetanus vaccine on {DateTime.Now.ToString("MMMM dd, yyyy")}"
+            };
 
-        var json = JsonConvert.SerializeObject(request);
-        var content = new StringContent(json);
-        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var response = await http.PostAsync(url, content);
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("Successfully Sent");
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json);
+            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await http.PostAsync(url, content);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Successfully Sent");
+            }
+            else
+            {
+                Console.WriteLine("Failed to Send");
+            }
         }
         else
         {
-            Console.WriteLine("Failed to Send");
+            var url = "https://app.philsms.com/api/v3/sms/send";
+            var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
+            var request = new
+            {
+                recipient = $"63{xpre.contact}",
+                sender_id = "PhilSMS",
+                type = "plain",
+                message = $"Goodjob!, {xinfo.fullname}! You have received the {xpre.vaccine} on {DateTime.Now.ToString("MMMM dd, yyyy")}"
+            };
+
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json);
+            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await http.PostAsync(url, content);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Successfully Sent");
+            }
+            else
+            {
+                Console.WriteLine("Failed to Send");
+            }
         }
     }
 
@@ -91,7 +125,7 @@
                 {
                     await InvokeAsync(async () =>
                     {
-                        // await PhilSms();
+                        await PhilSms();
                         snackBar.Add($"Done: Confirmed!", Severity.Success);
                         MudDialog.Cancel();
                         StateHasChanged();
