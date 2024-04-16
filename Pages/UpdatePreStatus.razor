@@ -11,13 +11,22 @@
 <MudDialog TitleClass="mud-primary" DisableSidePadding="true">
     <TitleContent>
         <MudText Typo="Typo.h6" Style="color:white">
-            <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3 mb-n1" />
            Mark As Done?
         </MudText>
     </TitleContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Confirm</MudButton>
+        <MudButton Disabled="@_processing" @onclick="Submit" Variant="Variant.Filled" Color="Color.Tertiary">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Please Wait</MudText>
+            }
+            else
+            {
+                <MudText>Confirm</MudText>
+            }
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -27,6 +36,7 @@
     [Parameter] public prenatal xpre { get; set; } = new prenatal();
     [Parameter] public info xinfo { get; set; } = new info();
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private bool _processing = false;
 
     private async Task<IEnumerable<info>> Search(string value)
     {
@@ -44,7 +54,7 @@
     }
     public async Task PhilSms()
     {
-       if (xpre.vaccine == "Tetanus 5th Dose")
+        if (xpre.vaccine == "Tetanus 5th Dose")
         {
             var url = "https://app.philsms.com/api/v3/sms/send";
             var accessToken = "411|ShHwb5NAblbVdVl4ozOUtiGh2nPUq07QrpZXjGgb";
@@ -98,6 +108,7 @@
 
     private async Task Submit()
     {
+        _processing = true;
         int i = 0;
         var xpresched = new prenatal
             {
@@ -125,7 +136,9 @@
                 {
                     await InvokeAsync(async () =>
                     {
-                        await PhilSms();
+                        // await PhilSms();
+                        await Task.Delay(2000);
+                        _processing = false;
                         snackBar.Add($"Done: Confirmed!", Severity.Success);
                         MudDialog.Cancel();
                         StateHasChanged();

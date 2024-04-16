@@ -36,14 +36,25 @@
      </DialogContent>
      <DialogActions>
          <MudButton OnClick="Cancel">Cancel</MudButton>
-         <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Submit</MudButton>
+        <MudButton Disabled="@_processing" @onclick="Submit" Variant="Variant.Filled" Color="Color.Tertiary">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Please Wait</MudText>
+            }
+            else
+            {
+                <MudText>Submit</MudText>
+            }
+        </MudButton>
      </DialogActions>
  </MudDialog>
 
-    @code {
+@code {
     private string text { get; set; } = "";
     [Parameter] public info xinfo { get; set; } = new info();
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private bool _processing = false;
 
     private async Task Cancel()
     {
@@ -52,6 +63,7 @@
 
     private async Task Submit()
     {
+        _processing = true;
         int i = 0;
         var info = new info
             {
@@ -83,6 +95,8 @@
                 {
                     await InvokeAsync(async () =>
                     {
+                        await Task.Delay(2000);
+                        _processing = false;
                         snackBar.Add($"Done: Successfully Updated!", Severity.Success);
                         MudDialog.Cancel();
                         StateHasChanged();

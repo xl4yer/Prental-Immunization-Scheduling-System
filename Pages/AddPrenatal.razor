@@ -32,7 +32,17 @@
             <MudToolBar>
                 <MudSpacer />
                 <MudButton Variant="Variant.Filled" Color="Color.Warning">Clear</MudButton> &nbsp;
-                <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="Submit">Save</MudButton>
+                <MudButton Disabled="@_processing" @onclick="Submit" Variant="Variant.Filled" Color="Color.Tertiary">
+                    @if (_processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Please Wait</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Submit</MudText>
+                    }
+                </MudButton>
             </MudToolBar>
         </MudContainer>
     </MudCard>
@@ -42,6 +52,8 @@
     private string text { get; set; } = "";
     [Parameter] public prenatal xpre { get; set; } = new prenatal();
     [Parameter] public info xinfo { get; set; } = new info();
+    private bool _processing = false;
+
 
     private List<string> vaccines = new List<string>
     {
@@ -95,6 +107,7 @@
 
     private async Task Submit()
     {
+        _processing = true;
         if (string.IsNullOrEmpty(xinfo.infoID) ||
             string.IsNullOrEmpty(xpre.vaccine))
         {
@@ -129,7 +142,9 @@
                     {
                         await InvokeAsync(async () =>
                         {
-                            await PhilSms();
+                            // await PhilSms();
+                            await Task.Delay(2000);
+                            _processing = false;
                             snackBar.Add($"Done: Successfully Saved!", Severity.Success);
                             StateHasChanged();
                         });
@@ -139,6 +154,7 @@
                 {
                     await InvokeAsync(() =>
                     {
+                        _processing = false;
                         snackBar.Add($"Warning: {response.ReasonPhrase}", Severity.Warning);
                         StateHasChanged();
                     });
