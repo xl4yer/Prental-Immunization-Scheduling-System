@@ -1,7 +1,11 @@
-﻿using Bhcirs.Models;
+﻿using Bhcirs.Class;
+using Bhcirs.Models;
 using Bhcirs.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Reporting.NETCore;
+using System.Data;
 
 namespace Bhcirs.Controllers
 {
@@ -10,10 +14,12 @@ namespace Bhcirs.Controllers
     public class ImmunizationController : Controller
     {
         ImmunizationServices xservices;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ImmunizationController(ImmunizationServices xservices)
+        public ImmunizationController(ImmunizationServices xservices, IWebHostEnvironment webHostEnvironment)
         {
             this.xservices = xservices;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -286,6 +292,132 @@ namespace Bhcirs.Controllers
         public async Task<int> CountPCV13()
         {
             return await xservices.CountPCV13();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> BCGReport()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.BCG();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "BCG.xls");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> PentaReport()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.Penta3();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "Penta.xls");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> bOPVReport()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.BOPV3();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "bOPV.xls");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> IPVReport()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.IPV2();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "IPV.xls");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> MMRReport()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.MMR2();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "MMR.xls");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> PCV13Report()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.PCV133();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "PCV13.xls");
         }
     }
 }

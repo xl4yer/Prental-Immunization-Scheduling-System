@@ -11,9 +11,14 @@
 <MudDialog TitleClass="mud-primary" DisableSidePadding="true">
     <TitleContent>
         <MudText Typo="Typo.h6" Style="color:white">
-           Mark As Done?
+          Just Checking....
         </MudText>
     </TitleContent>
+    <DialogContent>
+        <MudToolBar Style="font-size:20px;">
+            Mark as Done?
+        </MudToolBar>
+    </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
         <MudButton Disabled="@_processing" @onclick="Submit" Variant="Variant.Filled" Color="Color.Tertiary">

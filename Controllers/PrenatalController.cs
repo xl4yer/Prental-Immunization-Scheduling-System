@@ -1,7 +1,11 @@
-﻿using Bhcirs.Models;
+﻿using Bhcirs.Class;
+using Bhcirs.Models;
 using Bhcirs.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Reporting.NETCore;
+using System.Data;
 
 namespace Bhcirs.Controllers
 {
@@ -10,10 +14,12 @@ namespace Bhcirs.Controllers
 	public class PrenatalController : Controller
 	{
 		PrenatalServices xservices;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public PrenatalController(PrenatalServices xservices)
-		{
+        public PrenatalController(PrenatalServices xservices, IWebHostEnvironment webHostEnvironment)
+        {
 			this.xservices = xservices;
+            _webHostEnvironment = webHostEnvironment;
 		}
 
 		[HttpGet]
@@ -109,6 +115,27 @@ namespace Bhcirs.Controllers
         public async Task<int> CountTeta()
         {
             return await xservices.CountTeta();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> TetaReport()
+        {
+            ListtoTable listtoTable = new();
+            var dt = new DataTable();
+            var lst = await xservices.Teta5();
+            dt = listtoTable.ToDataTablee(lst);
+            string reportPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Reports", "Report.rdlc");
+            Stream reportDefinition;
+            using var fs = new FileStream(reportPath, FileMode.Open);
+            reportDefinition = fs;
+            LocalReport report = new LocalReport();
+            report.LoadReportDefinition(reportDefinition);
+            report.DataSources.Add(new ReportDataSource("DataSet1", dt));
+            byte[] excel = report.Render("EXCEL");
+            fs.Dispose();
+
+            return File(excel, "application/msexcel", "Tetanus.xls");
         }
     }
 }

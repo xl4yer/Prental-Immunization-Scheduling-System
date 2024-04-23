@@ -7,14 +7,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="CurrieTechnologies.Razor.SweetAlert2" Version="5.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.18" />
     <PackageReference Include="MudBlazor" Version="6.19.1" />
     <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.8" />
     <PackageReference Include="MySql.Data" Version="8.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.19" />
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Reports\DataSet.Designer.cs">
+      <DependentUpon>DataSet.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Reports\DataSet.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
   </ItemGroup>
 
 </Project>

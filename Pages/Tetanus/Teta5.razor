@@ -5,6 +5,7 @@
 @inject IDialogService Dialog
 @using System.Net.Http.Headers
 @inject HttpClient httpClient
+@inject NavigationManager Nav
 
 <PageTitle>Tetanus 5th Dose</PageTitle>
 
@@ -47,6 +48,11 @@
               GroupFooterClass="mb-4"
               Dense="true"
               @ref="_tableRef">
+              <ToolBarContent>
+                  <MudToolBar>
+                <MudLink class="export" Href="https://localhost:7251/api/Prenatal/TetaReport"><span>></span>Export to Excel</MudLink>
+                  </MudToolBar>
+              </ToolBarContent>
         <ColGroup>
             <col style="width: 60px;" />
             <col />
